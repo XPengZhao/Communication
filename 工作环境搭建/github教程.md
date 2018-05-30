@@ -2,8 +2,10 @@
 
 ## 基础使用
 
-1. [怎样使用Github -- from 知乎](https://www.zhihu.com/question/20070065/answer/79557687?utm_source=com.tencent.tim&utm_medium=social)
-2. [Github Desktop 图文教程](https://www.jianshu.com/p/a6fc842f501d)
+1. [Git入门指引](http://blog.a0z.me/2014/05/21/GitBeginning/)
+2. [怎样使用Github -- from 知乎](https://www.zhihu.com/question/20070065/answer/79557687?utm_source=com.tencent.tim&utm_medium=social)
+3. [Github Desktop 图文教程](https://www.jianshu.com/p/a6fc842f501d)
+4. [Github与Git关系](http://blog.jobbole.com/111187/)
 
 ## 协作开发
 
@@ -11,6 +13,7 @@
 2. [fork方式](https://gist.github.com/suziewong/4378619)
 3. [gitlab或github下fork后如何同步源的新更新内容](https://www.zhihu.com/question/28676261)  
    [github如何更新fork的代码](https://blog.csdn.net/j754379117/article/details/72890717)
+4. [GitHub团队项目合作流程](http://www.cnblogs.com/schaepher/p/4933873.html)
 
 ## 分支管理
 
