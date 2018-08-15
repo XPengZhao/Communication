@@ -1,5 +1,14 @@
 #include "stm32f10x.h"
 
+/**
+  * @ brief 串口1初始化
+  * @ param BaudRate
+  * @ retval None
+  * @ details BaudRate 115200
+  *           TX PA.9   RX PA.10
+  *           字长8位    一位停止位    无奇偶校验位
+	*           中断先、响优先级：1、1
+  */
 void Usart1_Init(u32 baudrate)
 {
   GPIO_InitTypeDef GPIO_InitStrue;
@@ -45,14 +54,7 @@ void USART1_IRQHandler(void)
   u8 buff;
   if(USART_GetITStatus(USART1,USART_IT_RXNE))
   {
-    buff= USART_ReceiveData(USART1);
+    buff=USART_ReceiveData(USART1);
     USART_SendData(USART1,buff);
   }
 }
- 
- int main(void)
- {	
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-  Usart1_Init(9600);
-   while(1);
- }
