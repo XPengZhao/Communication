@@ -70,6 +70,10 @@ void Usart1_Init(u32 baudrate)
 	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;  //DMA通道x没有设置为内存到内存传输
 	DMA_Init(DMA1_Channel5, &DMA_InitStructure);  //根据DMA_InitStruct中指定的参数初始化DMA的通道USART1_Tx_DMA_Channel所标识的寄存器
 	DMA_Cmd(DMA1_Channel5, ENABLE);
+
+  DMA_DeInit(DMA1_Channel4);
+  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;  //数据传输方向，从内存读取发送到外设
+  DMA_Init(DMA1_Channel4, &DMA_InitStructure);
 }
 
 void USART1_IRQHandler(void)
@@ -84,6 +88,7 @@ void USART1_IRQHandler(void)
     for(int i=0;i<USART1_DMA_RX_LEN;i++)
     {
       buff=USART1_RXBUFF[i];
+      while(USART_GetFlagStatus(USART1,USART_FLAG_TXE)==RESET);
       USART_SendData(USART1,buff);
     }
     
