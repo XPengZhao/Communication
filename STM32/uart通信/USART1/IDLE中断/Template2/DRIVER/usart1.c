@@ -74,6 +74,9 @@ void Usart1_Init(u32 baudrate)
   DMA_DeInit(DMA1_Channel4);
   DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;  //数据传输方向，从内存读取发送到外设
   DMA_Init(DMA1_Channel4, &DMA_InitStructure);
+	
+	USART_DMACmd(USART1,USART_DMAReq_Rx,ENABLE);
+	USART_DMACmd(USART1,USART_DMAReq_Tx,ENABLE);
 }
 
 void USART1_IRQHandler(void)
@@ -85,12 +88,23 @@ void USART1_IRQHandler(void)
     (void)USART1->SR;
     (void)USART1->DR;
 
+    buff=DMA_GetCurrDataCounter(DMA1_Channel5);
+    DMA_Cmd(DMA1_Channel4,DISABLE);
+    DMA_SetCurrDataCounter(DMA1_Channel4,USART1_DMA_RX_LEN-buff);
+    DMA_Cmd(DMA1_Channel4,ENABLE);
+
+/*
     for(int i=0;i<USART1_DMA_RX_LEN;i++)
     {
       buff=USART1_RXBUFF[i];
       while(USART_GetFlagStatus(USART1,USART_FLAG_TXE)==RESET);
       USART_SendData(USART1,buff);
     }
+*/
     
+    //开始新的DMA传输
+    DMA_Cmd(DMA1_Channel5,DISABLE);
+    DMA_SetCurrDataCounter(DMA1_Channel5,USART1_DMA_RX_LEN);
+    DMA_Cmd(DMA1_Channel5,ENABLE);
   }
 }
