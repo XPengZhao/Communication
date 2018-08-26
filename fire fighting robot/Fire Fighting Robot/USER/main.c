@@ -1,18 +1,13 @@
-#include "stm32f10x.h"
-#include "led.h"
-void Delay(u32 count)
-{
-  u32 i=0;
-  for(;i<count;i++);
-}
+#include "main.h"
 
 int main(void)
 {
   LED_Init();
+	SysTick_Init();
   while(1)
   {
-    Delay(3000000);
+    delay_ms(1000);
     LED_TOGGLE();
-    Delay(3000000);
+
   }
 }

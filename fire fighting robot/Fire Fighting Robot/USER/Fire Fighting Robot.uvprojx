@@ -111,12 +111,12 @@
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
           <SimDllArguments> -REMAP</SimDllArguments>
-          <SimDlgDll>DCM.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pCM3</SimDlgDllArguments>
+          <SimDlgDll>DARMSTM.DLL</SimDlgDll>
+          <SimDlgDllArguments>-pSTM32F103VC</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
-          <TargetDlgDll>TCM.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM3</TargetDlgDllArguments>
+          <TargetDlgDll>TARMSTM.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-pSTM32F103VC</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\USER;..\CORE;..\STM32F10x_FWLib\inc;..\DRIVERS</IncludePath>
+              <IncludePath>..\USER;..\CORE;..\STM32F10x_FWLib\inc;..\DRIVERS;..\APPLICATIONS</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -559,6 +559,16 @@
               <FileName>usart1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\DRIVERS\usart1.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>APPLICATIONS</GroupName>
+          <Files>
+            <File>
+              <FileName>dutytask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\dutytask.c</FilePath>
             </File>
           </Files>
         </Group>
