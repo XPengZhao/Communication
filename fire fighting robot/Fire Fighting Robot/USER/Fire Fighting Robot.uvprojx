@@ -580,6 +580,11 @@
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\pid.c</FilePath>
             </File>
+            <File>
+              <FileName>measure.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\measure.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

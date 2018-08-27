@@ -19,7 +19,7 @@ void taskloop(void)
  
 void Duty_5ms(void)
 {
-  Speed_Control();
+
 }
 
 void Duty_10ms(void)
@@ -39,5 +39,7 @@ void Duty_50ms(void)
 
 void Duty_100ms(void)
 {
-    
+  Get_Distance_Front();
+	printf("the distance is:%d\r\n",distance.front);
+	LED_TOGGLE();
 }
