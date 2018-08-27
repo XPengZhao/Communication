@@ -8,5 +8,7 @@
 #include "timer.h"
 #include "usart1.h" 
 #include "dutytask.h"
+#include "driver.h"
+#include "pid.h"
 
 #endif

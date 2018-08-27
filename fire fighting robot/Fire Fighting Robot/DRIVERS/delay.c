@@ -44,7 +44,7 @@ void delay_ms(u16 nms)
 } 
 
 
-//注释掉了位于stm32f10x_it.c 136行的SysTick_Handler(),避免重定义。															
+//注释掉了位于stm32f10x_it.c 136行的SysTick_Handler(),避免重定义。
 void SysTick_Handler(void)
 {
   taskloop();

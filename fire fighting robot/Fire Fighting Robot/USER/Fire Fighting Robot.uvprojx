@@ -560,6 +560,11 @@
               <FileType>1</FileType>
               <FilePath>..\DRIVERS\usart1.c</FilePath>
             </File>
+            <File>
+              <FileName>driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\DRIVERS\driver.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -569,6 +574,11 @@
               <FileName>dutytask.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\dutytask.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\pid.c</FilePath>
             </File>
           </Files>
         </Group>
