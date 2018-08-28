@@ -80,17 +80,17 @@ void Wave_Init(void){
     /*----------------------------------Front---------------------------------*/
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;                   //trig-->PC.11端口配置
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;             //推挽输出
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOC, &GPIO_InitStructure);                       //根据设定参数初始化PC.11
     GPIO_ResetBits(GPIOC,GPIO_Pin_11);                           //trig下拉电位
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;                    //echo-->PA.1 端口配置
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;                //下拉输入
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;        //浮空输入
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
   /*----------------------------------Left-----------------------------------*/
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;                   //trig-->PC.13端口配置
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
     GPIO_ResetBits(GPIOC,GPIO_Pin_13);                           //trig 下拉电位
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;                    //echo-->PA.2 端口配置
@@ -127,13 +127,13 @@ void Wave_Init(void){
 
     //中断分组初始化
     NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;              //TIM2中断
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;    //先占优先级2级
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;    //先占优先级2级
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;           //从优先级0级
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;              //IRQ通道被使能
     NVIC_Init(&NVIC_InitStructure);                              //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器 
-    
+    TIM_ClearITPendingBit(TIM2,TIM_IT_Update);                        //清除中断标志位
     TIM_ITConfig(TIM2,TIM_IT_Update|TIM_IT_CC2,ENABLE);          //允许更新中断 ,允许CC1IE捕获中断
-    TIM_Cmd(TIM2,ENABLE);                                        //使能定时器2
+		TIM_Cmd(TIM2,ENABLE);                                        //使能定时器2
     
     /*------------------------------TIM3--------------------------------------*/
     //初始化定时器3 TIM3	 
@@ -183,55 +183,62 @@ void Wave_Init(void){
 
 
     //中断分组初始化
-    NVIC_InitStructure.NVIC_IRQChannel = TIM5_IRQn;             //TIM5中断
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;   //先占优先级2级
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;          //从优先级0级
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;             //IRQ通道被使能
-    NVIC_Init(&NVIC_InitStructure);                             //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器 
+    NVIC_InitStructure.NVIC_IRQChannel = TIM5_IRQn;              //TIM5中断
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;    //先占优先级2级
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;           //从优先级0级
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;              //IRQ通道被使能
+    NVIC_Init(&NVIC_InitStructure);                              //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器 
     
-    TIM_ITConfig(TIM5,TIM_IT_Update|TIM_IT_CC3,ENABLE);         //允许更新中断 ,允许CC1IE捕获中断
-    TIM_Cmd(TIM5,ENABLE);                                       //使能定时器3
+    TIM_ITConfig(TIM5,TIM_IT_Update|TIM_IT_CC3,ENABLE);          //允许更新中断 ,允许CC1IE捕获中断
+    TIM_Cmd(TIM5,ENABLE);                                        //使能定时器3
 }
 
-//定时器2中断服务程序	 
 void TIM2_IRQHandler(void)
 {
-  if((TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET))
-    if((TIM2CH2_CAPTURE_STA&0X80)==0)
-      if(TIM2CH2_CAPTURE_STA&0X40)
+	printf("I'am now,in TIM2_IRQ\r\n");
+  if((TIM2CH2_CAPTURE_STA&0X80)==0)                              //还未成功捕获
+  {
+    if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    {
+			printf("I'am now,in update\r\n");
+      if(TIM2CH2_CAPTURE_STA&0X40)                               //之前已经捕获到上升沿，还未捕获到下降沿
       {
-        if((TIM2CH2_CAPTURE_STA&0X3F)==0X3F)//高电平太长了
+        if((TIM2CH2_CAPTURE_STA&0X3F)==0X3F)                     //高电平太长了
         {
-          TIM2CH2_CAPTURE_STA|=0X80;//标记成功捕获了一次
+          TIM2CH2_CAPTURE_STA|=0X80;                             //标记成功捕获了一次
           TIM2CH2_CAPTURE_VAL=0XFFFF;
         }
-        else 
+        else
           TIM2CH2_CAPTURE_STA++;
       }
-  if(TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET)//通道3发生捕获事件
-  {
-    if(TIM2CH2_CAPTURE_STA&0X40)		//捕获到一个下降沿
-    { 			
-      TIM2CH2_CAPTURE_STA|=0X80;		//标记成功捕获到一个完整脉冲
-      TIM2CH2_CAPTURE_VAL=TIM_GetCapture2(TIM2);
-      TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Rising); //CC3P=0 设置为上升沿捕获
     }
-    else                            //还未开始,第一次捕获上升沿
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET)                 //发生捕获事件
     {
-      TIM2CH2_CAPTURE_STA=0;      //清空
-      TIM2CH2_CAPTURE_VAL=0;
-      TIM_SetCounter(TIM2,0);
-      TIM2CH2_CAPTURE_STA|=0X40;  //标记捕获到了上升沿
-      TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Falling);		//CC3P=1 设置为下降沿捕获
-    }    
+        if(TIM2CH2_CAPTURE_STA&0X40)                               //之前已经捕获到上升沿
+        {
+          TIM2CH2_CAPTURE_STA|=0X80;                               //标记成功捕获一个完整脉冲
+          TIM2CH2_CAPTURE_VAL=TIM_GetCapture2(TIM2);
+          TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Rising);       //设置为上升沿捕获
+        }
+        else                                                       //还未开始,第一次捕获上升沿
+        {
+          TIM2CH2_CAPTURE_STA=0;
+          TIM2CH2_CAPTURE_VAL=0;
+          TIM_SetCounter(TIM2,0);
+          TIM2CH2_CAPTURE_STA|=0X40;                               //标记捕获到了上升沿
+          TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Falling);      //设置为下降沿捕获
+        }
     }
-    TIM_ClearITPendingBit(TIM2, TIM_IT_CC2|TIM_IT_Update); //清除中断标志位
+  }
+	TIM_ClearITPendingBit(TIM2, TIM_IT_CC2|TIM_IT_Update);           //清除中断标志位
 }
 
 void TIM3_IRQHandler(void)
 {
   if((TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET))
+  {
     if((TIM3CH3_CAPTURE_STA&0X80)==0)
+    {
       if(TIM3CH3_CAPTURE_STA&0X40)
       {
         if((TIM3CH3_CAPTURE_STA&0X3F)==0X3F)//高电平太长了
@@ -242,6 +249,8 @@ void TIM3_IRQHandler(void)
         else 
           TIM3CH3_CAPTURE_STA++;
       }
+    }
+  }
   if(TIM_GetITStatus(TIM3, TIM_IT_CC3) != RESET)//通道3发生捕获事件
   {
     if(TIM3CH3_CAPTURE_STA&0X40)		//捕获到一个下降沿 		
@@ -257,9 +266,9 @@ void TIM3_IRQHandler(void)
       TIM_SetCounter(TIM3,0);
       TIM3CH3_CAPTURE_STA|=0X40;  //标记捕获到了上升沿
       TIM_OC3PolarityConfig(TIM3,TIM_ICPolarity_Falling);		//CC3P=1 设置为下降沿捕获
-    }    
     }
-    TIM_ClearITPendingBit(TIM3, TIM_IT_CC3|TIM_IT_Update); //清除中断标志位
+  }
+  TIM_ClearITPendingBit(TIM3, TIM_IT_CC3|TIM_IT_Update); //清除中断标志位
 }
 
 void TIM5_IRQHandler(void)
