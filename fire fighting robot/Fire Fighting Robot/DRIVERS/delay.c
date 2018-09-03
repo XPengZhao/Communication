@@ -1,7 +1,6 @@
 #include "main.h"
 
 static u8  fac_us=0;              //us延时倍乘数
-static u16 fac_ms=0;              //ms延时倍乘数
 
 
 void SysTick_Init()
@@ -9,12 +8,15 @@ void SysTick_Init()
   u32 reload=0;
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);   //选择外部时钟  HCLK/8
   fac_us=SystemCoreClock/8000000;                         //每个us需要的systick时钟数
-  fac_ms=(u16)fac_us*1000;                                //每个ms需要的systick时钟数
   reload=SystemCoreClock/8000*5;                          //reload值为5ms需要的systick时钟数
   SysTick->CTRL|=SysTick_CTRL_TICKINT_Msk;                //开始SYSTICK中断
   SysTick->LOAD=reload;                                   //每5ms中断一次
+  NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
   SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;                 //开始SYSTICK计数
 
+#if DRIVER_CHECK
+printf("SysTick init successful\r\n");
+#endif
 }
 
 void delay_us(u32 nus)
@@ -47,5 +49,17 @@ void delay_ms(u16 nms)
 //注释掉了位于stm32f10x_it.c 136行的SysTick_Handler(),避免重定义。
 void SysTick_Handler(void)
 {
+
+#if IRQONCE_CHECK
+  static u8 systickIRQ_flag=1;
+  if(systickIRQ_flag)
+  {
+    printf("SysTick_Handler execute successful!\r\n");
+    systickIRQ_flag=0;
+  }
+#elif IRQDUPLICATE_CHECK
+  printf("SysTick_Handler execute successful!\r\n");
+#endif
+
   taskloop();
 }
