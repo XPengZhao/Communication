@@ -84,7 +84,7 @@ void Wave_Init(void){
     /*----------------------------------Front---------------------------------*/
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;                   //trig-->PC.11端口配置
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;             //推挽输出
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
     GPIO_Init(GPIOC, &GPIO_InitStructure);                       //根据设定参数初始化PC.11
     GPIO_ResetBits(GPIOC,GPIO_Pin_11);                           //trig下拉电位
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;                    //echo-->PA.1 端口配置
@@ -94,7 +94,7 @@ void Wave_Init(void){
   /*----------------------------------Left-----------------------------------*/
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;                   //trig-->PC.13端口配置
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
     GPIO_ResetBits(GPIOC,GPIO_Pin_13);                           //trig 下拉电位
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;                    //echo-->PA.2 端口配置
@@ -137,7 +137,7 @@ void Wave_Init(void){
     NVIC_Init(&NVIC_InitStructure);                              //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器 
     TIM_ClearITPendingBit(TIM2,TIM_IT_CC2|TIM_IT_Update);                        //清除中断标志位
     TIM_ITConfig(TIM2,TIM_IT_Update|TIM_IT_CC2,ENABLE);          //允许更新中断 ,允许CC1IE捕获中断
-    TIM_Cmd(TIM2,ENABLE);                                        //使能定时器2
+    //TIM_Cmd(TIM2,ENABLE);                                        //使能定时器2
 
 #if DRIVER_CHECK
 printf("front wave init successful\r\n");
@@ -169,7 +169,7 @@ printf("front wave init successful\r\n");
     NVIC_Init(&NVIC_InitStructure);                              //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器 
     TIM_ClearITPendingBit(TIM3, TIM_IT_CC3|TIM_IT_Update);
     TIM_ITConfig(TIM3,TIM_IT_Update|TIM_IT_CC3,ENABLE);          //允许更新中断 ,允许CC1IE捕获中断	
-    TIM_Cmd(TIM3,ENABLE);                                        //使能定时器3
+    //TIM_Cmd(TIM3,ENABLE);                                        //使能定时器3
 
 #if DRIVER_CHECK
 printf("left wave init successful\r\n");
@@ -202,7 +202,7 @@ printf("left wave init successful\r\n");
     NVIC_Init(&NVIC_InitStructure);                              //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器 
     TIM_ClearITPendingBit(TIM5, TIM_IT_CC3|TIM_IT_Update);
     TIM_ITConfig(TIM5,TIM_IT_Update|TIM_IT_CC3,ENABLE);          //允许更新中断 ,允许CC1IE捕获中断
-    TIM_Cmd(TIM5,ENABLE);                                        //使能定时器3
+    //TIM_Cmd(TIM5,ENABLE);                                        //使能定时器3
 
 #if DRIVER_CHECK
 printf("right wave init successful\r\n");
@@ -246,11 +246,11 @@ void TIM2_IRQHandler(void)
           TIM2CH2_CAPTURE_STA|=0X80;                             //标记成功捕获了一次
           TIM2CH2_CAPTURE_VAL=0XFFFF;
         }
-        else
+       else
           TIM2CH2_CAPTURE_STA++;
       }
     }
-    if(TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET)                 //发生捕获事件
+    if(TIM_GetITStatus(TIM2,TIM_IT_CC2) != RESET)                 //发生捕获事件
     {
 
 #if IRQONCE_CHECK
@@ -267,14 +267,14 @@ void TIM2_IRQHandler(void)
       if(TIM2CH2_CAPTURE_STA&0X40)                               //之前已经捕获到上升沿
       {
         TIM2CH2_CAPTURE_STA|=0X80;                               //标记成功捕获一个完整脉冲
-        TIM2CH2_CAPTURE_VAL=TIM_GetCapture2(TIM2);
+        TIM2CH2_CAPTURE_VAL=TIM2->CCR2;                          //TIM2CH2_CAPTURE_VAL=TIM_GetCapture2(TIM2);
         TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Rising);       //设置为上升沿捕获
       }
       else                                                       //还未开始,第一次捕获上升沿
       {
         TIM2CH2_CAPTURE_STA=0;
         TIM2CH2_CAPTURE_VAL=0;
-        TIM_SetCounter(TIM2,0);
+        TIM2->CNT=0;                                             //TIM_SetCounter(TIM2,0);
         TIM2CH2_CAPTURE_STA|=0X40;                               //标记捕获到了上升沿
         TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Falling);      //设置为下降沿捕获
       }
