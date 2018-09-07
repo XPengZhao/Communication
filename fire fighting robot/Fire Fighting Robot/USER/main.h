@@ -19,5 +19,7 @@
 #include "driver.h"
 #include "pid.h"
 #include "measure.h"
+#include "system.h"
+#include "datatransfer.h"
 
 #endif

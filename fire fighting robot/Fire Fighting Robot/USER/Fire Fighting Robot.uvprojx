@@ -565,6 +565,11 @@
               <FileType>1</FileType>
               <FilePath>..\DRIVERS\driver.c</FilePath>
             </File>
+            <File>
+              <FileName>system.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\DRIVERS\system.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -584,6 +589,11 @@
               <FileName>measure.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\measure.c</FilePath>
+            </File>
+            <File>
+              <FileName>datatransfer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\datatransfer.c</FilePath>
             </File>
           </Files>
         </Group>

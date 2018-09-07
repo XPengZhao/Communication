@@ -68,7 +68,7 @@ void Get_Distance_Front(void)
     temp*=5000;                            //溢出时间总和
     temp+=TIM2CH2_CAPTURE_VAL;             //得到总的高电平时间
     dis=temp*170;
-    dis /= 100;
+    dis /= 10;
     TIM2CH2_CAPTURE_STA=0;                 //开启下一次捕获
     distance.front=dis;
   }

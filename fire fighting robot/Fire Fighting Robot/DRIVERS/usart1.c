@@ -12,7 +12,7 @@ u8 USART1_TXBUFF[USART1_DMA_TX_LEN];    //USART1 DMA发送缓存区
 //标准库需要的支持函数                 
 struct __FILE 
 { 
-	int handle; 
+  int handle; 
 
 }; 
 
@@ -20,14 +20,14 @@ FILE __stdout;
 //定义_sys_exit()以避免使用半主机模式    
 void _sys_exit(int x) 
 { 
-	x = x; 
+  x = x; 
 } 
 //重定义fputc函数 
 int fputc(int ch, FILE *f)
 {      
-	while((USART1->SR&0X40)==0);//循环发送,直到发送完毕   
+  while((USART1->SR&0X40)==0);//循环发送,直到发送完毕   
   USART1->DR = (u8) ch;      
-	return ch;
+  return ch;
 }
 #endif 
 
@@ -85,39 +85,39 @@ void Usart1_Init(u32 baudrate)
   
   DMA_DeInit(DMA1_Channel5);
   DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&USART1->DR;  //DMA外设ADC基地址
-	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&USART1_RXBUFF;  //DMA内存基地址
-	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;  //数据传输方向，从内存读取发送到外设
-	DMA_InitStructure.DMA_BufferSize = USART1_DMA_RX_LEN;  //DMA通道的DMA缓存的大小
-	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  //外设地址寄存器不变
-	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  //内存地址寄存器递增
-	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;  //数据宽度为8位
-	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte; //数据宽度为8位
-	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;  //工作在正常缓存模式
-	DMA_InitStructure.DMA_Priority = DMA_Priority_Medium; //DMA通道 x拥有中优先级 
-	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;  //DMA通道x没有设置为内存到内存传输
-	DMA_Init(DMA1_Channel5, &DMA_InitStructure);  //根据DMA_InitStruct中指定的参数初始化DMA的通道USART1_Tx_DMA_Channel所标识的寄存器
-	DMA_Cmd(DMA1_Channel5, ENABLE);
+  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&USART1_RXBUFF;  //DMA内存基地址
+  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;  //数据传输方向，从内存读取发送到外设
+  DMA_InitStructure.DMA_BufferSize = USART1_DMA_RX_LEN;  //DMA通道的DMA缓存的大小
+  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  //外设地址寄存器不变
+  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  //内存地址寄存器递增
+  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;  //数据宽度为8位
+  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte; //数据宽度为8位
+  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;  //工作在正常缓存模式
+  DMA_InitStructure.DMA_Priority = DMA_Priority_Medium; //DMA通道 x拥有中优先级 
+  DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;  //DMA通道x没有设置为内存到内存传输
+  DMA_Init(DMA1_Channel5, &DMA_InitStructure);  //根据DMA_InitStruct中指定的参数初始化DMA的通道USART1_Tx_DMA_Channel所标识的寄存器
+  DMA_Cmd(DMA1_Channel5, ENABLE);
 
   DMA_DeInit(DMA1_Channel4);
   DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&USART1_TXBUFF;  //DMA内存基地址 
   DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;  //数据传输方向，从内存读取发送到外设
   DMA_Init(DMA1_Channel4, &DMA_InitStructure);
-	
-	USART_DMACmd(USART1,USART_DMAReq_Rx,ENABLE);
-	USART_DMACmd(USART1,USART_DMAReq_Tx,ENABLE);
-	
+  
+  USART_DMACmd(USART1,USART_DMAReq_Rx,ENABLE);
+  USART_DMACmd(USART1,USART_DMAReq_Tx,ENABLE);
+  
 #if DRIVER_CHECK
-	printf("Usart1 init successful!\r\n");
+  printf("Usart1 init successful!\r\n");
 #endif
 }
 
 /**
   * @brief 串口1的DMA发送函数，发送一组数据
   * @param DataToSend 要发送数据的数组的指针
-	* @param data_num 要发送的数据的个数
+  * @param data_num 要发送的数据的个数
   * @retval None
   */
-void Usart1_Send(unsigned char *DataToSend,u16 data_num)
+void Usart1_Send(unsigned char *DataToSend,u8 data_num)
 {
     DMA_Cmd(DMA1_Channel4, DISABLE);
     DMA_ClearFlag(DMA1_FLAG_TC4);//清除DMA1通道4传输完成标志
@@ -156,7 +156,7 @@ void USART1_IRQHandler(void)
       USART_SendData(USART1,buff);
     }
 */
-    
+
     //开始新的DMA传输
     DMA_Cmd(DMA1_Channel5,DISABLE);
     DMA_SetCurrDataCounter(DMA1_Channel5,USART1_DMA_RX_LEN);

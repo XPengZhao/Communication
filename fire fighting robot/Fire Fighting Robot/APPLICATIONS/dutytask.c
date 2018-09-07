@@ -16,7 +16,7 @@ void taskloop(void)
 printf("taskloop execute successful!\r\n");
 #endif
 
-  Duty_5ms();  
+  Duty_5ms();
   if(system_5ms%2==0)
     Duty_10ms();
   if(system_5ms%4==0)
@@ -77,7 +77,8 @@ printf("Duty_20ms execute successful!\r\n");
 
 void Duty_50ms(void)
 {
-
+	Speed_Control();
+	
 #if TASKONCE_CHECK
   static u8 Duty50ms_flag=1;
   if(Duty50ms_flag)
@@ -93,8 +94,8 @@ printf("Duty_50ms execute successful!\r\n");
 
 void Duty_100ms(void)
 {
-  Get_Distance_Front();
-  printf("the distance is:%d\r\n",distance.front);
+  //Get_Distance_Front();
+  //printf("the distance is:%d\r\n",distance.front);
 
 #if TASKONCE_CHECK
   static u8 Duty100ms_flag=1;

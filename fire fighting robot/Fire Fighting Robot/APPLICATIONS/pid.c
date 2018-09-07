@@ -30,5 +30,5 @@ void Speed_Control(void)
   LED_TOGGLE();
   MotorRight(TIM4,speed_right);
   MotorLeft(TIM4,speed_left);
-    
+  ANO_DT_Send_MotoPWM(speed_right,speed_left,0,0,0,0,0,0);
 }

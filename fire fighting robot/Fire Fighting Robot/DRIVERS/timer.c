@@ -67,7 +67,6 @@ printf("pwm init successful!\r\n");
   *          右超声波  trig-->PC.12 echo-->PB.0 TIM3_CH3
   */
 
-
 void Wave_Init(void){
     GPIO_InitTypeDef GPIO_InitStructure;
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -267,14 +266,16 @@ void TIM2_IRQHandler(void)
       if(TIM2CH2_CAPTURE_STA&0X40)                               //之前已经捕获到上升沿
       {
         TIM2CH2_CAPTURE_STA|=0X80;                               //标记成功捕获一个完整脉冲
-        TIM2CH2_CAPTURE_VAL=TIM2->CCR2;                          //TIM2CH2_CAPTURE_VAL=TIM_GetCapture2(TIM2);
+        //TIM2CH2_CAPTURE_VAL=TIM_GetCapture2(TIM2);
+        TIM2CH2_CAPTURE_VAL=TIM2->CCR2;
         TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Rising);       //设置为上升沿捕获
       }
       else                                                       //还未开始,第一次捕获上升沿
       {
         TIM2CH2_CAPTURE_STA=0;
         TIM2CH2_CAPTURE_VAL=0;
-        TIM2->CNT=0;                                             //TIM_SetCounter(TIM2,0);
+       //TIM_SetCounter(TIM2,0);
+        TIM2->CNT=0;
         TIM2CH2_CAPTURE_STA|=0X40;                               //标记捕获到了上升沿
         TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Falling);      //设置为下降沿捕获
       }
