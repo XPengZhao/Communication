@@ -71,6 +71,7 @@ void Get_Distance_Front(void)
     dis /= 10;
     TIM2CH2_CAPTURE_STA=0;                 //开启下一次捕获
     distance.front=dis;
+    __Sensordata.dis_front=dis;
   }
   TIM_Cmd(TIM2,DISABLE);                    //失能定时器2
 }

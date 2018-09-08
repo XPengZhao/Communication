@@ -595,6 +595,11 @@
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\datatransfer.c</FilePath>
             </File>
+            <File>
+              <FileName>motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\motor.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

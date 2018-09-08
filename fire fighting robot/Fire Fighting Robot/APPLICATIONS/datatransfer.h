@@ -3,8 +3,8 @@
 #include "main.h"
 
 /**
-  * @brief æ•°æ®æ‹†åˆ†å®å®šä¹‰ï¼Œåœ¨å‘é€å¤§äº1å­—èŠ‚çš„æ•°æ®ç±»å‹æ—¶ï¼Œæ¯”å¦‚int16ã€floatç­‰ï¼Œéœ€è¦æŠŠæ•°æ®æ‹†æˆ
-  *        å•ç‹¬å­—èŠ‚è¿›è¡Œå‘é€
+  * @brief Êı¾İ²ğ·Öºê¶¨Òå£¬ÔÚ·¢ËÍ´óÓÚ1×Ö½ÚµÄÊı¾İÀàĞÍÊ±£¬±ÈÈçint16¡¢floatµÈ£¬ĞèÒª°ÑÊı¾İ²ğ³É
+  *        µ¥¶À×Ö½Ú½øĞĞ·¢ËÍ
   */
 #define BYTE0(dwTemp)       ( *( (char *)(&dwTemp)    ) )
 #define BYTE1(dwTemp)       ( *( (char *)(&dwTemp) + 1) )
@@ -13,12 +13,37 @@
 
 #define USART1_SEND
 
+typedef struct{
+  int16_t motor_right;
+  int16_t motor_left;
+  int16_t motor_fan;
+  int16_t motor4;
+  int16_t motor5;
+  int16_t motor6;
+  int16_t motor7;
+  int16_t motor8;
+}MotorData;
 
+typedef struct{
+  int16_t dis_front;                             //Ç°³¬Éù²¨£¬¶ÔÓ¦µØÃæÕ¾ACC_X
+  int16_t dis_right;                             //ÓÒ³¬Éù²¨£¬¶ÔÓ¦µØÃæÕ¾ACC_Y
+  int16_t dis_left;                              //×ó³¬Éù²¨£¬¶ÔÓ¦µØÃæÕ¾ACC_Z
+  int16_t fire_sensor;                           //»ğÑæ´«¸ĞÆ÷£¬¶ÔÓ¦µØÃæÕ¾GYRO_X
+  int16_t wheel_right;                           //ÓÒ±àÂëÆ÷£¬¶ÔÓ¦µØÃæÕ¾GYRO_Y
+  int16_t wheel_left;                            //×ó±àÂëÆ÷£¬¶ÔÓ¦µØÃæÕ¾GYRO_Z
+  int16_t POS_X;                                 //µ±Ç°Î»ÖÃX×ø±ê£¬¶ÔÓ¦µØÃæÕ¾MAG_X
+  int16_t POS_Y;                                 //µ±Ç°Î»ÖÃY×ø±ê£¬¶ÔÓ¦µØÃæÕ¾MAG_Y
+  int16_t MAG_Z;
+}SensorData;
+
+extern MotorData __Motordata;
+extern SensorData __Sensordata;
+
+void DatatransferTask(void);
 void Data_Send(u8 *DataToSend, u8 length);
 void ANO_DT_Send_Check(u8 head, u8 check_sum);
-void ANO_DT_Send_Version(u8 hardware_type, u16 hardware_ver,u16 software_ver,u16 protocol_ver,u16 bootloader_ver);
 void ANO_DT_Send_Status(float angle_rol, float angle_pit, float angle_yaw, s32 alt, u8 fly_model, u8 armed);
-void ANO_DT_Send_Senser(s16 a_x,s16 a_y,s16 a_z,s16 g_x,s16 g_y,s16 g_z,s16 m_x,s16 m_y,s16 m_z,s32 bar);
+void ANO_DT_Send_Senser(s16 a_x,s16 a_y,s16 a_z,s16 g_x,s16 g_y,s16 g_z,s16 m_x,s16 m_y,s16 m_z);
 void ANO_DT_Send_Power(u16 votage, u16 current);
 void ANO_DT_Send_MotoPWM(u16 m_1,u16 m_2,u16 m_3,u16 m_4,u16 m_5,u16 m_6,u16 m_7,u16 m_8);
 void ANO_DT_Send_PID(u8 group,float p1_p,float p1_i,float p1_d,float p2_p,float p2_i,float p2_d,float p3_p,float p3_i,float p3_d);

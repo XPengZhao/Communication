@@ -2,7 +2,8 @@
 
 
 u8 data_to_send[50];                                  //发送数据缓存
-
+MotorData __Motordata={0,0,0,0,0,0,0,0};
+SensorData __Sensordata={0,0,0,0,0,0,0,0,0};
 
 /**
   * @brief 协议中所有发送数据功能使用到的发送函数
@@ -16,6 +17,37 @@ static void Data_Send(u8 *DataToSend, u8 length)
 #endif
 
 }
+
+/**
+  * @brief 将数据传回地面站，以方便调试
+  * @param 
+  * @retval None
+  * @details 传输电机数据，传感器数据
+  */
+void DatatransferTask(void)
+{
+  ANO_DT_Send_MotoPWM(__Motordata.motor_right,
+                      __Motordata.motor_left ,
+                      __Motordata.motor_fan  ,
+                      __Motordata.motor4     ,
+                      __Motordata.motor5     ,
+                      __Motordata.motor6     ,
+                      __Motordata.motor7     ,
+                      __Motordata.motor8
+                      );
+
+  ANO_DT_Send_Senser(__Sensordata.dis_front  ,
+                     __Sensordata.dis_left   ,
+                     __Sensordata.dis_right  ,
+                     __Sensordata.fire_sensor,
+                     __Sensordata.wheel_left ,
+                     __Sensordata.wheel_right,
+                     __Sensordata.POS_X      ,
+                     __Sensordata.POS_Y      ,
+                     __Sensordata.MAG_Z      
+                    );
+}
+
 
 #if 0
 /////////////////////////////////////////////////////////////////////////////////////
@@ -194,34 +226,6 @@ void ANO_DT_Send_Check(u8 head, u8 check_sum)
   Data_Send(data_to_send, 7);
 }
 
-void ANO_DT_Send_Version(u8 hardware_type, u16 hardware_ver,u16 software_ver,u16 protocol_ver,u16 bootloader_ver)
-{
-  u8 _cnt=0;
-  data_to_send[_cnt++]=0xAA;
-  data_to_send[_cnt++]=0xAA;
-  data_to_send[_cnt++]=0x00;
-  data_to_send[_cnt++]=0;
-  
-  data_to_send[_cnt++]=hardware_type;
-  data_to_send[_cnt++]=BYTE1(hardware_ver);
-  data_to_send[_cnt++]=BYTE0(hardware_ver);
-  data_to_send[_cnt++]=BYTE1(software_ver);
-  data_to_send[_cnt++]=BYTE0(software_ver);
-  data_to_send[_cnt++]=BYTE1(protocol_ver);
-  data_to_send[_cnt++]=BYTE0(protocol_ver);
-  data_to_send[_cnt++]=BYTE1(bootloader_ver);
-  data_to_send[_cnt++]=BYTE0(bootloader_ver);
-  
-  data_to_send[3] = _cnt-4;                           //求长度字节
-  
-  u8 sum = 0;
-  for(u8 i=0;i<_cnt;i++)
-    sum += data_to_send[i];
-  data_to_send[_cnt++]=sum;
-
-  Data_Send(data_to_send, _cnt);
-}
-
 void ANO_DT_Send_Status(float angle_rol, float angle_pit, float angle_yaw, s32 alt, u8 fly_model, u8 armed)
 {
   u8 _cnt=0;
@@ -262,7 +266,7 @@ void ANO_DT_Send_Status(float angle_rol, float angle_pit, float angle_yaw, s32 a
   Data_Send(data_to_send, _cnt);
 }
 
-void ANO_DT_Send_Senser(s16 a_x,s16 a_y,s16 a_z,s16 g_x,s16 g_y,s16 g_z,s16 m_x,s16 m_y,s16 m_z,s32 bar)
+void ANO_DT_Send_Senser(s16 a_x,s16 a_y,s16 a_z,s16 g_x,s16 g_y,s16 g_z,s16 m_x,s16 m_y,s16 m_z)
 {
   u8 _cnt=0;
   vs16 _temp;
@@ -308,7 +312,7 @@ void ANO_DT_Send_Senser(s16 a_x,s16 a_y,s16 a_z,s16 g_x,s16 g_y,s16 g_z,s16 m_x,
   for(u8 i=0;i<_cnt;i++)
     sum += data_to_send[i];
   data_to_send[_cnt++] = sum;
-  
+
   Data_Send(data_to_send, _cnt);
 }
 
@@ -365,7 +369,7 @@ void ANO_DT_Send_MotoPWM(u16 m_1,u16 m_2,u16 m_3,u16 m_4,u16 m_5,u16 m_6,u16 m_7
   data_to_send[_cnt++]=BYTE0(m_7);
   data_to_send[_cnt++]=BYTE1(m_8);
   data_to_send[_cnt++]=BYTE0(m_8);
-  
+
   data_to_send[3] = _cnt-4;
   
   u8 sum = 0;

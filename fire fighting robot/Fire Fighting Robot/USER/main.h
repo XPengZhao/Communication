@@ -21,5 +21,6 @@
 #include "measure.h"
 #include "system.h"
 #include "datatransfer.h"
+#include "motor.h"
 
 #endif

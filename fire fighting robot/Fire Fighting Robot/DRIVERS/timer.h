@@ -7,9 +7,6 @@
 #define ARR_WAVE 4999
 #define PSC_WAVE 7199
 
-#define MotorRight TIM_SetCompare1
-#define MotorLeft TIM_SetCompare2
-
 extern u8  TIM2CH2_CAPTURE_STA;            //保存捕获状态
 extern u16 TIM2CH2_CAPTURE_VAL;            //保存捕获值
 extern u8  TIM3CH3_CAPTURE_STA;            //保存捕获状态
