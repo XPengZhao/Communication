@@ -26,26 +26,34 @@ static void Data_Send(u8 *DataToSend, u8 length)
   */
 void DatatransferTask(void)
 {
-  ANO_DT_Send_MotoPWM(__Motordata.motor_right,
-                      __Motordata.motor_left ,
-                      __Motordata.motor_fan  ,
-                      __Motordata.motor4     ,
-                      __Motordata.motor5     ,
-                      __Motordata.motor6     ,
-                      __Motordata.motor7     ,
-                      __Motordata.motor8
-                      );
-
-  ANO_DT_Send_Senser(__Sensordata.dis_front  ,
-                     __Sensordata.dis_left   ,
-                     __Sensordata.dis_right  ,
-                     __Sensordata.fire_sensor,
-                     __Sensordata.wheel_left ,
-                     __Sensordata.wheel_right,
-                     __Sensordata.POS_X      ,
-                     __Sensordata.POS_Y      ,
-                     __Sensordata.MAG_Z      
+  static int8_t flag=0;
+  flag++;
+  if(flag%2==1)
+  {
+    ANO_DT_Send_MotoPWM(__Motordata.motor_right,
+                        __Motordata.motor_left ,
+                        __Motordata.motor_fan  ,
+                        __Motordata.motor4     ,
+                        __Motordata.motor5     ,
+                        __Motordata.motor6     ,
+                        __Motordata.motor7     ,
+                        __Motordata.motor8
+                        );
+  }
+  else if(flag%2==0)
+  {
+    ANO_DT_Send_Senser(__Sensordata.dis_front  ,
+                      __Sensordata.dis_right  ,
+                      __Sensordata.dis_left   ,
+                      __Sensordata.fire_sensor,
+                      __Sensordata.wheel_left ,
+                      __Sensordata.wheel_right,
+                      __Sensordata.POS_X      ,
+                      __Sensordata.POS_Y      ,
+                      __Sensordata.MAG_Z      
                     );
+  }
+
 }
 
 

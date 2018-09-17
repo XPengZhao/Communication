@@ -46,7 +46,7 @@ printf("Duty_5ms execute successful!\r\n");
 
 void Duty_10ms(void)
 {
-
+  DatatransferTask();
 #if TASKONCE_CHECK
   static u8 Duty10ms_flag=1;
   if(Duty10ms_flag)
@@ -61,7 +61,6 @@ printf("Duty_10ms execute successful!\r\n");
 
 void Duty_20ms(void)
 {
-
 #if TASKONCE_CHECK
   static u8 Duty20ms_flag=1;
   if(Duty20ms_flag)
@@ -77,9 +76,7 @@ printf("Duty_20ms execute successful!\r\n");
 
 void Duty_50ms(void)
 {
-	//Speed_Control();
-	DatatransferTask();
-	
+  Pos_Control();
 #if TASKONCE_CHECK
   static u8 Duty50ms_flag=1;
   if(Duty50ms_flag)
@@ -95,8 +92,7 @@ printf("Duty_50ms execute successful!\r\n");
 
 void Duty_100ms(void)
 {
-  Get_Distance_Front();
-  //printf("the distance is:%d\r\n",distance.front);
+
 
 #if TASKONCE_CHECK
   static u8 Duty100ms_flag=1;

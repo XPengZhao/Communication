@@ -22,5 +22,6 @@
 #include "system.h"
 #include "datatransfer.h"
 #include "motor.h"
+#include "filter.h"
 
 #endif

@@ -600,6 +600,11 @@
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\motor.c</FilePath>
             </File>
+            <File>
+              <FileName>fliter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\fliter.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
