@@ -6,13 +6,13 @@ now_diff 本次误差信号量    last_diff 上次误差信号量
 */
 void Pos_Control(void)
 {
-    static int16_t now_dis=0,last_dis=STANDARD_DIS,now_diff=0,last_diff=0;
+    static int16_t now_dis=0,last_dis=STANDARD_DIS,now_err=0,last_err=0;
     int16_t ctrl_signal=0;
     Get_Distance_Front();
     now_dis=distance.front;
-    now_diff=now_dis-STANDARD_DIS;
-    ctrl_signal=kp*now_diff+kd*(last_diff-now_diff);
-    if(now_diff>=0)
+    now_err=now_dis-STANDARD_DIS;
+    ctrl_signal=kp*now_err+kd*(last_err-now_err);
+    if(now_err>=0)
     {
       MotorRight(100-ctrl_signal);
       MotorLeft(90);
@@ -22,7 +22,7 @@ void Pos_Control(void)
       MotorLeft(90+ctrl_signal);
       MotorRight(100);
     }
-    last_diff=now_diff;
+    last_err=now_err;
 }
 
 void Speed_Control(void)

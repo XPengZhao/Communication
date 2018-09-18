@@ -63,5 +63,12 @@ void SysTick_Handler(void)
   printf("SysTick_Handler execute successful!\r\n");
 #endif
 
-  taskloop();
+  switch(FSMflag)
+  {
+    case START_FLAG:        StartSearch();break;
+    case TASKLOOP_FLAG:     taskloop();break;
+    case SENSOROFFSET_FLAG: SenserOffsetInit();break;
+
+  }
+//  taskloop();
 }

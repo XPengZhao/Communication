@@ -605,6 +605,11 @@
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\fliter.c</FilePath>
             </File>
+            <File>
+              <FileName>parameters.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\parameters.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

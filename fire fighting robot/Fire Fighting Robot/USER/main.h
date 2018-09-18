@@ -23,5 +23,6 @@
 #include "datatransfer.h"
 #include "motor.h"
 #include "filter.h"
+#include "parameters.h"
 
 #endif

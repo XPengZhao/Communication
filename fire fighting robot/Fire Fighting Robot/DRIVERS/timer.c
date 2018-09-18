@@ -238,16 +238,6 @@ void TIM2_IRQHandler(void)
       printf("TIM2_UpdateIRQ execute successful!\r\n");
 #endif
 
-      if(TIM2CH2_CAPTURE_STA&0X40)                               //之前已经捕获到上升沿，还未捕获到下降沿
-      {
-        if((TIM2CH2_CAPTURE_STA&0X3F)==0X3F)                     //高电平太长了
-        {
-          TIM2CH2_CAPTURE_STA|=0X80;                             //标记成功捕获了一次
-          TIM2CH2_CAPTURE_VAL=0XFFFF;
-        }
-       else
-          TIM2CH2_CAPTURE_STA++;
-      }
     }
     if(TIM_GetITStatus(TIM2,TIM_IT_CC2) != RESET)                 //发生捕获事件
     {
@@ -281,7 +271,7 @@ void TIM2_IRQHandler(void)
       }
     }
   }
-  TIM_ClearITPendingBit(TIM2, TIM_IT_CC2|TIM_IT_Update);           //清除中断标志位
+  TIM_ClearITPendingBit(TIM2, TIM_IT_CC2|TIM_IT_Update);         //清除中断标志位
 }
 
 void TIM3_IRQHandler(void)
