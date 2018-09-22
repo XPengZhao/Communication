@@ -46,7 +46,7 @@ printf("Duty_5ms execute successful!\r\n");
 
 void Duty_10ms(void)
 {
-  //DatatransferTask();
+  DatatransferTask();
 #if TASKONCE_CHECK
   static u8 Duty10ms_flag=1;
   if(Duty10ms_flag)

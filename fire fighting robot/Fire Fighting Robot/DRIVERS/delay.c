@@ -65,9 +65,9 @@ void SysTick_Handler(void)
 
   switch(FSMflag)
   {
-    case START_FLAG:        StartSearch();break;
-    case TASKLOOP_FLAG:     taskloop();break;
     case SENSOROFFSET_FLAG: SenserOffsetInit();break;
+    case TASKLOOP_FLAG:     taskloop();break;
+    case START_FLAG:        StartSearch();break;
 
   }
 //  taskloop();

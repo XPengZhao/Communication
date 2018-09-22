@@ -95,8 +95,11 @@ LED连接在PD.7上，为GPIO驱动，设置为推挽输出。PD.7输出高时LE
 ### 7）定时器驱动
 
 1. **计数**
-    1. 产生5ms的中断执行任务。使用SysTick定时器，每隔5ms进入一次中断，在中断中执行任务调度。使用变量system_5ms记录系统进入中断的次数。
-    2. 另一不断计数以作为当前系统时间，为PID计算提供精确的时间。
+    1. ~~产生5ms的中断执行任务。使用SysTick定时器，每隔5ms进入一次中断，在中断中执行任务调度。使用变量system_5ms记录系统进入中断的次数。~~
+
+    2. 实际采用5ms进入中断执行任务调度是发现问题，会出现任务堵塞的情况。具体是在measure.c中的超声波测距的部分出现问题。
+
+
 
 2. **产生PWM波**
 
@@ -123,3 +126,57 @@ LED连接在PD.7上，为GPIO驱动，设置为推挽输出。PD.7输出高时LE
     - Usart1 IDLE中断
 
     并且，`delay_us()`与`delay_ms()`掩蔽所有中断，期间通过截取`Systick->VAL`的值来实现延时。
+
+## 5. 出现的问题及分析
+
+### 1） 任务调度周期
+
+  在考虑任务调度周期的时候，之前的考虑为5ms,但是实际执行的时候会出现问题。采用5ms进入中断执行任务调度，会出现超声波无法测到距离的情况。具体是在measure.c中的超声波测距的部分出现问题。代码如下：
+
+  ```c
+  void Get_Distance_Front(void)
+{
+  u32 temp=0; 
+  int16_t dis=0;
+  printf("Sysinit is %d\t",SysTick->VAL);
+  TIM_Cmd(TIM2,ENABLE);                    //使能定时器2
+  GPIO_SetBits(GPIOC,GPIO_Pin_13);
+  delay_us(20);
+  GPIO_ResetBits(GPIOC,GPIO_Pin_13);
+
+  while((!(TIM2CH2_CAPTURE_STA&0X80))&&(SysTick->VAL>4500));
+  if(TIM2CH2_CAPTURE_STA&0X80)
+  {
+    temp+=TIM2CH2_CAPTURE_VAL;             //得到总的高电平时间
+    dis=temp*170;
+    dis /= 10;
+    limitfilter(&dis);
+    kalmanfilter(&dis);
+    distance.front=dis;
+    __Sensordata.dis_front=dis;
+    printf("Syslast is %d\r\n",SysTick->VAL);
+  }
+  TIM_Cmd(TIM2,DISABLE);                   //失能定时器2
+  TIM2CH2_CAPTURE_STA=0;                   //开启下一次捕获
+}
+  ```
+
+- 其中，Systick定时器的reaload值为`fac_us*5000=9*5000=45000`,即5ms。
+
+- `while((!(TIM2CH2_CAPTURE_STA&0X80))&&(SysTick->VAL>4500));`是等待超声波回波的语句，跳出循环的条件为超声波检测到回波或者距离下一个SysTick定时器异常的时间小于0.5ms时（即`SysTick->VAL>4500`），第二个判断条件时不希望因为检测不到回波而死在循环之中，进而堵塞任务调度。但是，这也**导致了超声波无法测到距离的情况出现。**
+
+- 两个printf语句为调试语句，用于测量整个过程的时间。实际测量结果如下表所示：
+
+  测量距离    |   20cm    |  30cm   | 40cm    |
+  :----:     |:----:     | :----:  | :----:  |
+  Sysinit    |44979     |  44979   |  44979  |
+  Syslast    |15520     |  10745   |  5746   |
+
+  其中`Systick->VAL`每减小9时，时间增加1us。由表中数据可以看出，距离每增加10cm，测量时间约增加`5000/9 us=0.56ms`,时间与通过距离/声速的计算值基本一致。
+  
+  表格中的数据增量符合计算，但是具体值（比如20cm时的测量时间）不符合`0.56ms/10cm`的计算，是因为printf语句占用了比较多的时间。如果去掉两句printf语句，通过Jlink硬件调试的方法来读取寄存器值，测量结果为：
+
+  测量距离    |   20cm    |  30cm   | 40cm    |
+  :----:     |:----:     | :----:  | :----:  |
+  Sysinit    |44984     |  44982   |  44982  |
+  Syslast    |29736     |  24067   |  18886  |

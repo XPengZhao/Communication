@@ -68,6 +68,7 @@ printf("pwm init successful!\r\n");
   */
 
 void Wave_Init(void){
+  
     GPIO_InitTypeDef GPIO_InitStructure;
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
     NVIC_InitTypeDef NVIC_InitStructure;
@@ -87,7 +88,7 @@ void Wave_Init(void){
     GPIO_Init(GPIOC, &GPIO_InitStructure);                       //根据设定参数初始化PC.11
     GPIO_ResetBits(GPIOC,GPIO_Pin_11);                           //trig下拉电位
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;                    //echo-->PA.1 端口配置
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;        
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
   /*----------------------------------Left-----------------------------------*/
@@ -97,7 +98,7 @@ void Wave_Init(void){
     GPIO_Init(GPIOC, &GPIO_InitStructure);
     GPIO_ResetBits(GPIOC,GPIO_Pin_13);                           //trig 下拉电位
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;                    //echo-->PA.2 端口配置
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;;       //浮空输入
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;       //浮空输入
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
     /*----------------------------------Right-----------------------------------*/
@@ -135,8 +136,8 @@ void Wave_Init(void){
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;              //IRQ通道被使能
     NVIC_Init(&NVIC_InitStructure);                              //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器 
     TIM_ClearITPendingBit(TIM2,TIM_IT_CC2|TIM_IT_Update);                        //清除中断标志位
-    TIM_ITConfig(TIM2,TIM_IT_Update|TIM_IT_CC2,ENABLE);          //允许更新中断 ,允许CC1IE捕获中断
-    //TIM_Cmd(TIM2,ENABLE);                                        //使能定时器2
+    TIM_ITConfig(TIM2,TIM_IT_CC2,ENABLE);                        //允许CC2IE捕获中断
+    //TIM_Cmd(TIM2,ENABLE);                                      //使能定时器2
 
 #if DRIVER_CHECK
 printf("front wave init successful\r\n");
@@ -222,37 +223,10 @@ void TIM2_IRQHandler(void)
   printf("TIM2_IRQHandler execute successful!\r\n");
 #endif
 
-  if((TIM2CH2_CAPTURE_STA&0X80)==0)                              //还未成功捕获
+  if(!(TIM2CH2_CAPTURE_STA&0X80))                              //还未成功捕获
   {
-    if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    if(TIM_GetITStatus(TIM2,TIM_IT_CC2) != RESET)              //发生捕获事件
     {
-
-#if IRQONCE_CHECK
-      static u8 TIM2UpdateIRQ_flag=1;
-      if(TIM2UpdateIRQ_flag)
-      {
-        printf("TIM2_UpdateIRQ execute successful!\r\n");
-        TIM2UpdateIRQ_flag=0;
-      }
-#elif IRQDUPLICATE_CHECK
-      printf("TIM2_UpdateIRQ execute successful!\r\n");
-#endif
-
-    }
-    if(TIM_GetITStatus(TIM2,TIM_IT_CC2) != RESET)                 //发生捕获事件
-    {
-
-#if IRQONCE_CHECK
-      static u8 TIM2CC2IRQ_flag=1;
-      if(TIM2CC2IRQ_flag)
-      {
-        printf("TIM2_CC2IRQ execute successful!\r\n");
-        TIM2CC2IRQ_flag=0;
-      }
-#elif IRQDUPLICATE_CHECK
-      printf("TIM2_CC2IRQ execute successful!\r\n");
-#endif
-
       if(TIM2CH2_CAPTURE_STA&0X40)                               //之前已经捕获到上升沿
       {
         TIM2CH2_CAPTURE_STA|=0X80;                               //标记成功捕获一个完整脉冲
@@ -271,7 +245,7 @@ void TIM2_IRQHandler(void)
       }
     }
   }
-  TIM_ClearITPendingBit(TIM2, TIM_IT_CC2|TIM_IT_Update);         //清除中断标志位
+  TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);                     //清除中断标志位
 }
 
 void TIM3_IRQHandler(void)

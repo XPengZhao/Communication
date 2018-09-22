@@ -69,25 +69,29 @@ void Get_Distance_Right(void)
 
 void Get_Distance_Front(void)
 {
-  u32 temp=0; 
+  u16 temp=0; 
   int16_t dis=0;
-  printf("Sysinit is %d\t",SysTick->VAL);
+
+	TIM2CH2_CAPTURE_STA=0;
   TIM_Cmd(TIM2,ENABLE);                    //使能定时器2
   GPIO_SetBits(GPIOC,GPIO_Pin_13);
   delay_us(20);
   GPIO_ResetBits(GPIOC,GPIO_Pin_13);
-
   while((!(TIM2CH2_CAPTURE_STA&0X80))&&(SysTick->VAL>4500));
   if(TIM2CH2_CAPTURE_STA&0X80)
   {
-    temp+=TIM2CH2_CAPTURE_VAL;             //得到总的高电平时间
-    dis=temp*170;
+    LED_TOGGLE();
+    temp = TIM2CH2_CAPTURE_VAL;             //得到总的高电平时间
+    dis = temp*170;
     dis /= 10;
     limitfilter(&dis);
     kalmanfilter(&dis);
     distance.front=dis;
     __Sensordata.dis_front=dis;
-    printf("Syslast is %d\r\n",SysTick->VAL);
+  }
+  else
+  {
+    TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Rising);       //设置为上升沿捕获 
   }
   TIM_Cmd(TIM2,DISABLE);                   //失能定时器2
   TIM2CH2_CAPTURE_STA=0;                   //开启下一次捕获
