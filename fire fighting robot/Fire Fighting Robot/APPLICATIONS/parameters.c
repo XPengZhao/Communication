@@ -10,7 +10,7 @@ void SenserOffsetInit(void)
   if(count1%10==0)
   {
     Get_Distance_Front();
-/*    if(last_dis>150&&last_dis<300)
+    if(last_dis>150&&last_dis<300)
     {
       if(distance.front>150&&distance.front<300)
       {
@@ -19,8 +19,7 @@ void SenserOffsetInit(void)
         return;
       }
     }
-    last_dis=distance.front; */
-    DatatransferTask();
+    last_dis=distance.front; 
     RED_OFF();
     count1=0;
 
@@ -38,6 +37,7 @@ void StartSearch(void)
     {
       FSMflag=TASKLOOP_FLAG;
       RED_OFF();
+      distance.front=STANDARD_DIS;
     }
     count2=0;
   }

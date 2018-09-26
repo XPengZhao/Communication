@@ -61,6 +61,7 @@ printf("Duty_10ms execute successful!\r\n");
 
 void Duty_20ms(void)
 {
+    Pos_Control();
 #if TASKONCE_CHECK
   static u8 Duty20ms_flag=1;
   if(Duty20ms_flag)
@@ -76,7 +77,6 @@ printf("Duty_20ms execute successful!\r\n");
 
 void Duty_50ms(void)
 {
-  Pos_Control();
 #if TASKONCE_CHECK
   static u8 Duty50ms_flag=1;
   if(Duty50ms_flag)

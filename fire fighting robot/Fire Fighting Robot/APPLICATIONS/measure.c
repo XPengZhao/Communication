@@ -84,7 +84,10 @@ void Get_Distance_Front(void)
     temp = TIM2CH2_CAPTURE_VAL;             //得到总的高电平时间
     dis = temp*170;
     dis /= 10;
+    __Sensordata.dis_left=dis;
     limitfilter(&dis);
+    kalmanfilter(&dis);
+    __Sensordata.dis_right=dis;
     kalmanfilter(&dis);
     distance.front=dis;
     __Sensordata.dis_front=dis;

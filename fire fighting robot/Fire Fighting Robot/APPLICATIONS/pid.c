@@ -1,28 +1,47 @@
 #include "main.h"
 
+//  float P,I,D,FF,MaxError
+static PIDParams pos_pidparam={0.4,0,0,0,50};
+
+//  float Error,Target;
+static PIDState  pos_pidstate={0,200};
+
 /*
 now_dis 本次测量的距离    last_dis 上次测量的距离
 now_diff 本次误差信号量    last_diff 上次误差信号量
 */
 void Pos_Control(void)
 {
-    static int16_t now_dis=0,last_dis=STANDARD_DIS,now_err=0,last_err=0;
-    int16_t ctrl_signal=0;
+    float e=0,de=0,ctrl_signal=0;
     Get_Distance_Front();
-    now_dis=distance.front;
-    now_err=now_dis-STANDARD_DIS;
-    ctrl_signal=kp*now_err+kd*(last_err-now_err);
-    if(now_err>=0)
+    e=pos_pidstate.Target-distance.front;
+    de=(e-pos_pidstate.Error);
+    pos_pidstate.Error=e;
+    ctrl_signal=pos_pidparam.P*(e+pos_pidparam.D*de);
+    if(ctrl_signal>pos_pidparam.MaxError)
     {
-      MotorRight(100-ctrl_signal);
-      MotorLeft(90);
+      ctrl_signal=pos_pidparam.MaxError;
+    }
+    else if(ctrl_signal<-pos_pidparam.MaxError)
+    {
+      ctrl_signal=-pos_pidparam.MaxError;
+    }
+    if(e>-15&&e<15)
+    {
+      MotorRight(100);
+      MotorLeft(80);
+    }
+    else if(e>15)
+    {
+      MotorLeft(80-ctrl_signal);
+      MotorRight(100);
     }
     else
     {
-      MotorLeft(90+ctrl_signal);
-      MotorRight(100);
+      MotorLeft(100);
+      MotorRight(100+ctrl_signal);
     }
-    last_err=now_err;
+
 }
 
 void Speed_Control(void)
