@@ -8,7 +8,8 @@ x_mid=x(k|k-1)，这一时刻的预测距离    p_mid=p(k|k-1)预测协方差
 z_measure 测量值    R测量噪声，可理解为测量协方差
 x_now计算得出的本时刻距离，p_now，计算出的本时刻协方差，供下一时刻迭代
 */
-void kalmanfilter(int16_t *z_measure)
+
+void kalmanfilter(u16 *z_measure)
 {
   static float x_mid,x_last=0,p_mid,p_last=0,p_now,x_now=0;
   static float Q=ProcessNiose_Q,kg,R=MeasureNoise_R;
@@ -25,12 +26,10 @@ void kalmanfilter(int16_t *z_measure)
   p_now=(1-kg)*p_mid;                   //最优值对应的covariance
   p_last=p_now;                         //更新covariance 值
   x_last=x_now;                            //更新系统状态值
-  *z_measure=(int)x_now;
+  *z_measure=(u16)x_now;
 }
 
-
-
-void limitfilter(int16_t *measure)
+void limitfilter(u16 *measure)
 {
   if(*measure>UPPER_LIMIT)
   {

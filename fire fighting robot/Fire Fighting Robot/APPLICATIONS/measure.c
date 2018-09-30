@@ -1,14 +1,14 @@
 #include "main.h"
 
-//å…¨å±€ç»“æ„distanceç”¨äºä¿å­˜è¶…å£°æ³¢æ¢æµ‹åˆ°çš„è·ç¦»ï¼Œæœ‰ä¸‰ä¸ªæˆå‘˜ã€‚
+//È«¾Ö½á¹¹distanceÓÃÓÚ±£´æ³¬Éù²¨Ì½²âµ½µÄ¾àÀë£¬ÓĞÈı¸ö³ÉÔ±¡£
 Distance distance={0,0,0};
 
 /**
-  * @brief æµ‹é‡å·¦å¢™çš„è·ç¦»
+  * @brief ²âÁ¿×óÇ½µÄ¾àÀë
   * @param None
   * @retval None
   * @details trig-->PC.13  echo-->PA.2  TIM5_CH3
-  *          æ¯«ç±³çº§æµ‹è·ï¼Œé‡‡ç”¨é™å¹…æ»¤æ³¢ä¸å¡å°”æ›¼æ»¤æ³¢
+  *          ºÁÃ×¼¶²â¾à£¬²ÉÓÃÏŞ·ùÂË²¨Óë¿¨¶ûÂüÂË²¨
   */
 void Get_Distance_Left(void)
 {
@@ -23,31 +23,31 @@ void Get_Distance_Left(void)
   while((!(TIM5CH3_CAPTURE_STA&0X80))&&(SysTick->VAL>100));
   if(TIM5CH3_CAPTURE_STA&0X80)
   {
-    temp+=TIM5CH3_CAPTURE_VAL;             //å¾—åˆ°æ€»çš„é«˜ç”µå¹³æ—¶é—´
+    temp+=TIM5CH3_CAPTURE_VAL;             //µÃµ½×ÜµÄ¸ßµçÆ½Ê±¼ä
     dis=temp*170;
     dis /= 10;
-    limitfilter(&dis);
-    kalmanfilter(&dis);
+ //   limitfilter(&dis);
+ //   kalmanfilter2(&dis);
     distance.left=dis;
     __Sensordata.dis_left=dis;
   }
   TIM_Cmd(TIM5,DISABLE);
-  TIM5CH3_CAPTURE_STA=0;                   //å¼€å¯ä¸‹ä¸€æ¬¡æ•è·
+  TIM5CH3_CAPTURE_STA=0;                   //¿ªÆôÏÂÒ»´Î²¶»ñ
 }
 
 /**
-  * @brief æµ‹é‡å³å¢™çš„è·ç¦»
+  * @brief ²âÁ¿ÓÒÇ½µÄ¾àÀë
   * @param None
   * @retval None
   * @details trig-->PC.12  echo-->PB.0  TIM3_CH3
-  *          æ¯«ç±³çº§æµ‹è·ï¼Œé‡‡ç”¨é™å¹…æ»¤æ³¢ä¸å¡å°”æ›¼æ»¤æ³¢
+  *          ºÁÃ×¼¶²â¾à£¬²ÉÓÃÏŞ·ùÂË²¨Óë¿¨¶ûÂüÂË²¨
   */
 void Get_Distance_Right(void)
 {
   u32 temp=0; 
-  int16_t dis=0;
+  u16 dis=0;
 
-  TIM_Cmd(TIM3,ENABLE);                    //ä½¿èƒ½å®šæ—¶å™¨2
+  TIM_Cmd(TIM3,ENABLE);                    //Ê¹ÄÜ¶¨Ê±Æ÷2
   GPIO_SetBits(GPIOC,GPIO_Pin_12);
   delay_us(20);
   GPIO_ResetBits(GPIOC,GPIO_Pin_12);
@@ -55,25 +55,24 @@ void Get_Distance_Right(void)
   while((!(TIM3CH3_CAPTURE_STA&0X80))&&(SysTick->VAL>100));
   if(TIM3CH3_CAPTURE_STA&0X80)
   {
-    temp+=TIM3CH3_CAPTURE_VAL;             //å¾—åˆ°æ€»çš„é«˜ç”µå¹³æ—¶é—´
+    temp+=TIM3CH3_CAPTURE_VAL;             //µÃµ½×ÜµÄ¸ßµçÆ½Ê±¼ä
     dis=temp*170;
     dis /= 10;
-    limitfilter(&dis);
-    kalmanfilter(&dis);
+//    limitfilter(&dis);
+ //   kalmanfilter1(&dis);
     distance.left=dis;
     __Sensordata.dis_left=dis;
   }
-  TIM_Cmd(TIM3,DISABLE);                   //å¤±èƒ½å®šæ—¶å™¨2
-  TIM3CH3_CAPTURE_STA=0;                   //å¼€å¯ä¸‹ä¸€æ¬¡æ•è·
+  TIM_Cmd(TIM3,DISABLE);                   //Ê§ÄÜ¶¨Ê±Æ÷2
+  TIM3CH3_CAPTURE_STA=0;                   //¿ªÆôÏÂÒ»´Î²¶»ñ
 }
 
 void Get_Distance_Front(void)
 {
-  u16 temp=0; 
-  int16_t dis=0;
+  u16 dis=0,temp=0;
 
 	TIM2CH2_CAPTURE_STA=0;
-  TIM_Cmd(TIM2,ENABLE);                    //ä½¿èƒ½å®šæ—¶å™¨2
+  TIM_Cmd(TIM2,ENABLE);                     //Ê¹ÄÜ¶¨Ê±Æ÷2
   GPIO_SetBits(GPIOC,GPIO_Pin_13);
   delay_us(20);
   GPIO_ResetBits(GPIOC,GPIO_Pin_13);
@@ -81,22 +80,21 @@ void Get_Distance_Front(void)
   if(TIM2CH2_CAPTURE_STA&0X80)
   {
     LED_TOGGLE();
-    temp = TIM2CH2_CAPTURE_VAL;             //å¾—åˆ°æ€»çš„é«˜ç”µå¹³æ—¶é—´
-    dis = temp*170;
-    dis /= 10;
-    __Sensordata.dis_left=dis;
+    temp = TIM2CH2_CAPTURE_VAL;             //µÃµ½×ÜµÄ¸ßµçÆ½Ê±¼ä
+    dis = temp * 170 / 1000;
+    __Sensordata.dis_left=(int)dis;
     limitfilter(&dis);
     kalmanfilter(&dis);
-    __Sensordata.dis_right=dis;
-    kalmanfilter(&dis);
+    __Sensordata.dis_right=(int)dis;
+    dis/=10;
     distance.front=dis;
-    __Sensordata.dis_front=dis;
+    __Sensordata.dis_front=(int)dis;
   }
   else
   {
-    TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Rising);       //è®¾ç½®ä¸ºä¸Šå‡æ²¿æ•è· 
+    TIM_OC2PolarityConfig(TIM2,TIM_ICPolarity_Rising);       //ÉèÖÃÎªÉÏÉıÑØ²¶»ñ
   }
-  TIM_Cmd(TIM2,DISABLE);                   //å¤±èƒ½å®šæ—¶å™¨2
-  TIM2CH2_CAPTURE_STA=0;                   //å¼€å¯ä¸‹ä¸€æ¬¡æ•è·
+  TIM_Cmd(TIM2,DISABLE);                   //Ê§ÄÜ¶¨Ê±Æ÷2
+  TIM2CH2_CAPTURE_STA=0;                   //¿ªÆôÏÂÒ»´Î²¶»ñ
 }
 

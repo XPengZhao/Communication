@@ -52,23 +52,12 @@ void delay_ms(u16 nms)
 void SysTick_Handler(void)
 {
 
-#if IRQONCE_CHECK
-  static u8 systickIRQ_flag=1;
-  if(systickIRQ_flag)
+  switch(FSMflag)
   {
-    printf("SysTick_Handler execute successful!\r\n");
-    systickIRQ_flag=0;
+    case SENSOROFFSET_FLAG: SenserOffsetInit();break;
+    case TASKLOOP_FLAG:     taskloop();break;
+    case START_FLAG:        StartSearch();break;
+
   }
-#elif IRQDUPLICATE_CHECK
-  printf("SysTick_Handler execute successful!\r\n");
-#endif
-
-//  switch(FSMflag)
-//  {
-//    case SENSOROFFSET_FLAG: SenserOffsetInit();break;
-//    case TASKLOOP_FLAG:     taskloop();break;
-//    case START_FLAG:        StartSearch();break;
-
-//  }
-  taskloop();
+  //taskloop();
 }

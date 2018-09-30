@@ -47,62 +47,22 @@ printf("Duty_5ms execute successful!\r\n");
 void Duty_10ms(void)
 {
   DatatransferTask();
-#if TASKONCE_CHECK
-  static u8 Duty10ms_flag=1;
-  if(Duty10ms_flag)
-  {
-    printf("Duty_10ms execute successful!\r\n");
-    Duty10ms_flag=0;
-  }
-#elif TASKDUPLICATE_CHECK
-printf("Duty_10ms execute successful!\r\n");
-#endif
 }
 
 void Duty_20ms(void)
 {
-    Pos_Control();
-#if TASKONCE_CHECK
-  static u8 Duty20ms_flag=1;
-  if(Duty20ms_flag)
-  {
-    printf("Duty_20ms execute successful!\r\n");
-    Duty20ms_flag=0;
-  }
-#elif TASKDUPLICATE_CHECK
-printf("Duty_20ms execute successful!\r\n");
-#endif
-
+  //Pos_Control();
+  Get_Distance_Front();
+  MotorRight(100);
+  MotorLeft(85);
 }
 
 void Duty_50ms(void)
 {
-#if TASKONCE_CHECK
-  static u8 Duty50ms_flag=1;
-  if(Duty50ms_flag)
-  {
-    printf("Duty_50ms execute successful!\r\n");
-    Duty50ms_flag=0;
-  }
-#elif TASKDUPLICATE_CHECK
-printf("Duty_50ms execute successful!\r\n");
-#endif
 
 }
 
 void Duty_100ms(void)
 {
-
-
-#if TASKONCE_CHECK
-  static u8 Duty100ms_flag=1;
-  if(Duty100ms_flag)
-  {
-    printf("Duty_100ms execute successful!\r\n");
-    Duty100ms_flag=0;
-  }
-#elif TASKDUPLICATE_CHECK
-printf("Duty_100ms execute successful!\r\n");
-#endif
 
 }

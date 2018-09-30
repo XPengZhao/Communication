@@ -10,9 +10,9 @@ void SenserOffsetInit(void)
   if(count1%10==0)
   {
     Get_Distance_Front();
-    if(last_dis>150&&last_dis<300)
+    if(last_dis>15&&last_dis<30)
     {
-      if(distance.front>150&&distance.front<300)
+      if(distance.front>15&&distance.front<30)
       {
         FSMflag=START_FLAG;
         RED_ON();
@@ -32,8 +32,8 @@ void StartSearch(void)
   count2++;
   if(count2%10==0)
   {
-      Get_Distance_Front();
-    if(distance.front<100)
+    Get_Distance_Front();
+    if(distance.front<10)
     {
       FSMflag=TASKLOOP_FLAG;
       RED_OFF();

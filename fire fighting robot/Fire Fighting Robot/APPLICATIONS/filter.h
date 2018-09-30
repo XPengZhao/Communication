@@ -1,11 +1,10 @@
 #ifndef FILTER_H
 #define FILTER_H
+#include "main.h"
 
 #define UPPER_LIMIT 500
-#define MeasureNoise_R 0.542
-#define ProcessNiose_Q 0.118
-void kalmanfilter(int16_t *z_measure);
-void limitfilter(int16_t *measure);
-
-
+#define MeasureNoise_R 0.11
+#define ProcessNiose_Q 0.03
+void kalmanfilter(u16 *z_measure);
+void limitfilter(u16 *measure);
 #endif
