@@ -1,17 +1,17 @@
 #include "main.h"
 
 //  float P,I,D,FF,MaxError
-static PIDParams pos_pidparam={0,0,0,0,50};
+static PIDParams pos_pidparam={0,0,0,0,80};
 
 //  float Error,Target;
 static PIDState  pos_pidstate={0,15};
 
 //  int8_t ne_min,ne_two,ne_one,zero,one,two,max;比例参数
-static FuzzyParam fuzzyparam={-50,-20,-15,0,15,20,50};
+static FuzzyParam fuzzyparam={-35,-25,-20,0,20,25,35};
 
 //  int8_t ne_min,ne_two,ne_one,zero,one,two,max;微分参数
 //static FuzzyD fuzzyd={50,15,8,5,8,15,50};
-static FuzzyD fuzzyd={30,15,10,25,10,15,30};
+static FuzzyD fuzzyd={30,15,15,40,15,15,30};
 
 /*
 now_dis 本次测量的距离    last_dis 上次测量的距离
