@@ -29,10 +29,12 @@ void kalmanfilter(u16 *z_measure)
   *z_measure=(u16)x_now;
 }
 
-void limitfilter(u16 *measure)
+//ÂËµô´Ö´óÎó²î
+void limitfilter(u16 *measure,u16 refer)
 {
-  if(*measure>UPPER_LIMIT)
+  int16_t err=*measure-refer;
+  if(err>20||err<20)
   {
-    *measure=UPPER_LIMIT;
+    *measure=refer;
   }
 }

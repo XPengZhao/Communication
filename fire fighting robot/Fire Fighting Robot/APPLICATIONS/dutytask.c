@@ -5,17 +5,6 @@ void taskloop(void)
   static u32 system_5ms=0;
   system_5ms++;
 
-#if TASKONCE_CHECK
-  static u8 taskloop_flag=1;
-  if(taskloop_flag)
-  {
-    printf("taskloop execute successful!\r\n");
-    taskloop_flag=0;
-  }
-#elif TASKDUPLICATE_CHECK
-printf("taskloop execute successful!\r\n");
-#endif
-
   Duty_5ms();
   if(system_5ms%2==0)
     Duty_10ms();
@@ -25,23 +14,13 @@ printf("taskloop execute successful!\r\n");
     Duty_50ms();
   if(system_5ms%20==0)
     Duty_100ms();
+  if(system_5ms%200==0)
+    Duty_1000ms();
 }
 
  
 void Duty_5ms(void)
 {
-
-#if TASKONCE_CHECK
-  static u8 Duty5ms_flag=1;
-  if(Duty5ms_flag)
-  {
-    printf("Duty_5ms execute successful!\r\n");
-    Duty5ms_flag=0;
-  }
-#elif TASKDUPLICATE_CHECK
-printf("Duty_5ms execute successful!\r\n");
-#endif
-
 }
 
 void Duty_10ms(void)
@@ -51,10 +30,9 @@ void Duty_10ms(void)
 
 void Duty_20ms(void)
 {
-  //Pos_Control();
-  Get_Distance_Front();
-  MotorRight(100);
-  MotorLeft(85);
+  Pos_ControlRight();
+  //MotorLeft(100);
+  //MotorRight(50);
 }
 
 void Duty_50ms(void)
@@ -65,4 +43,8 @@ void Duty_50ms(void)
 void Duty_100ms(void)
 {
 
+}
+
+void Duty_1000ms(void)
+{
 }

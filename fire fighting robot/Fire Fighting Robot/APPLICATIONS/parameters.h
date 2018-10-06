@@ -3,6 +3,5 @@
 #include "main.h" 
 
 void SenserOffsetInit(void);
-void StartSearch(void);
 
 #endif

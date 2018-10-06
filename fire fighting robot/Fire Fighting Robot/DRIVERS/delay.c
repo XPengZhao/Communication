@@ -56,8 +56,6 @@ void SysTick_Handler(void)
   {
     case SENSOROFFSET_FLAG: SenserOffsetInit();break;
     case TASKLOOP_FLAG:     taskloop();break;
-    case START_FLAG:        StartSearch();break;
-
   }
   //taskloop();
 }

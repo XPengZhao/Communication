@@ -1,23 +1,60 @@
 #include "main.h"
 
 //  float P,I,D,FF,MaxError
-static PIDParams pos_pidparam={0.4,0,0,0,50};
+static PIDParams pos_pidparam={0,0,0,0,50};
 
 //  float Error,Target;
-static PIDState  pos_pidstate={0,200};
+static PIDState  pos_pidstate={0,15};
+
+//  int8_t ne_min,ne_two,ne_one,zero,one,two,max;±»¿˝≤Œ ˝
+static FuzzyParam fuzzyparam={-50,-20,-15,0,15,20,50};
+
+//  int8_t ne_min,ne_two,ne_one,zero,one,two,max;Œ¢∑÷≤Œ ˝
+//static FuzzyD fuzzyd={50,15,8,5,8,15,50};
+static FuzzyD fuzzyd={30,15,10,25,10,15,30};
 
 /*
-now_dis Êú¨Ê¨°ÊµãÈáèÁöÑË∑ùÁ¶ª    last_dis ‰∏äÊ¨°ÊµãÈáèÁöÑË∑ùÁ¶ª
-now_diff Êú¨Ê¨°ËØØÂ∑Æ‰ø°Âè∑Èáè    last_diff ‰∏äÊ¨°ËØØÂ∑Æ‰ø°Âè∑Èáè
+now_dis ±æ¥Œ≤‚¡øµƒæ‡¿Î    last_dis …œ¥Œ≤‚¡øµƒæ‡¿Î
+now_diff ±æ¥ŒŒÛ≤Ó–≈∫≈¡ø    last_diff …œ¥ŒŒÛ≤Ó–≈∫≈¡ø
 */
-void Pos_Control(void)
+void Pos_ControlRight(void)
 {
     float e=0,de=0,ctrl_signal=0;
-    Get_Distance_Front();
-    e=pos_pidstate.Target-distance.front;
-    de=(e-pos_pidstate.Error);
-    pos_pidstate.Error=e;
-    ctrl_signal=pos_pidparam.P*(e+pos_pidparam.D*de);
+    Get_Distance_Right();
+    e = pos_pidstate.Target - distance.right;
+    de = e - pos_pidstate.Error;
+    pos_pidstate.Error = e;
+
+    //ƒ£∫˝πÊ‘Ú
+    if(e>2)
+    {
+      ctrl_signal=fuzzyparam.max+fuzzyd.max*de;
+    }
+    else if(e==2)
+    {
+      ctrl_signal=fuzzyparam.two+fuzzyd.two*de;
+    }
+    else if(e==1)
+    {
+      ctrl_signal=fuzzyparam.one+fuzzyd.one*de;
+    }
+    else if(e==0)
+    {
+      ctrl_signal=fuzzyparam.zero+fuzzyd.zero*de;
+    }
+    else if(e==-1)
+    {
+      ctrl_signal=fuzzyparam.ne_one+fuzzyd.ne_one*de;
+    }
+    else if(e==-2)
+    {
+      ctrl_signal=fuzzyparam.ne_two+fuzzyd.ne_two*de;
+    }
+    else if(e<-2)
+    {
+      ctrl_signal=fuzzyparam.ne_min+fuzzyd.ne_min*de;
+    }
+
     if(ctrl_signal>pos_pidparam.MaxError)
     {
       ctrl_signal=pos_pidparam.MaxError;
@@ -26,17 +63,23 @@ void Pos_Control(void)
     {
       ctrl_signal=-pos_pidparam.MaxError;
     }
-    if(e>-15&&e<15)
+
+    if(e>0)                  //”“∆´
     {
-      MotorRight(100);
-      MotorLeft(80);
-    }
-    else if(e>15)
-    {
-      MotorLeft(80-ctrl_signal);
+      MotorLeft(100-ctrl_signal);
       MotorRight(100);
     }
-    else
+    else if(e<0)             //◊Û∆´
+    {
+      MotorLeft(100);
+      MotorRight(100+ctrl_signal);
+    }
+    else if(de>0)       //◊Û±ﬂªÿ¿¥
+    {
+      MotorLeft(100-ctrl_signal);
+      MotorRight(100);
+    }
+    else                //”“±ﬂªÿ¿¥
     {
       MotorLeft(100);
       MotorRight(100+ctrl_signal);
@@ -46,18 +89,5 @@ void Pos_Control(void)
 
 void Speed_Control(void)
 {
-  static int16_t speed=100,speed_flag=0;
-  if(speed_flag==0)
-    speed--;
-  else
-    speed++;
 
-  if(speed==0)
-    speed_flag=1;
-  else if(speed==100)
-    speed_flag=0;
-
-  LED_TOGGLE();
-  MotorRight(speed);
-  MotorLeft(speed);
 }

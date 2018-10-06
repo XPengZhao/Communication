@@ -2,9 +2,9 @@
 #define MAIN_H
 
 #define DRIVER_CHECK 0
-#define TASKONCE_CHECK 0                                //濡傛灉鍙兂妫�鏌ヤ竴娆★紝缃负0
+#define TASKONCE_CHECK 0                                //如果只想检查一次，置为0
 #define TASKDUPLICATE_CHECK 0
-#define IRQONCE_CHECK 0                                 //濡傛灉鍙兂妫�鏌ヤ竴娆★紝缃负0
+#define IRQONCE_CHECK 0                                 //如果只想检查一次，置为0
 #define IRQDUPLICATE_CHECK 0
 
 
@@ -24,5 +24,9 @@
 #include "motor.h"
 #include "filter.h"
 #include "parameters.h"
+#include "adc.h"
+#include "judge_fire.h"
+#include "fire_fighting.h"
+#include "search.h"
 
 #endif

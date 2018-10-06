@@ -12,26 +12,30 @@ Distance distance={0,0,0};
   */
 void Get_Distance_Left(void)
 {
-  u32 temp=0; 
-  int16_t dis=0;
+  u16 dis=0,temp=0;
 
+  TIM5CH3_CAPTURE_STA=0;
   TIM_Cmd(TIM5,ENABLE);
   GPIO_SetBits(GPIOC,GPIO_Pin_13);
   delay_us(20);
   GPIO_ResetBits(GPIOC,GPIO_Pin_13);
-  
-  while((!(TIM5CH3_CAPTURE_STA&0X80))&&(SysTick->VAL>100));
+  while((!(TIM5CH3_CAPTURE_STA&0X80))&&(SysTick->VAL>4500));
   if(TIM5CH3_CAPTURE_STA&0X80)
   {
-    temp+=TIM5CH3_CAPTURE_VAL;             //得到总的高电平时间
-    dis=temp*170;
-    dis /= 10;
- //   limitfilter(&dis);
- //   kalmanfilter2(&dis);
+    LED_TOGGLE();
+    temp = TIM5CH3_CAPTURE_VAL;             //得到总的高电平时间
+    dis = temp * 170 / 1000;
+    //limitfilter(&dis,distance.front);
+    kalmanfilter(&dis);
+    dis/=10;
     distance.left=dis;
-    __Sensordata.dis_left=dis;
+    __Sensordata.dis_left=(int)dis;
   }
-  TIM_Cmd(TIM5,DISABLE);
+  else
+  {
+    TIM_OC3PolarityConfig(TIM5,TIM_ICPolarity_Rising);       //设置为上升沿捕获
+  }
+  TIM_Cmd(TIM5,DISABLE);                   //失能定时器3
   TIM5CH3_CAPTURE_STA=0;                   //开启下一次捕获
 }
 
@@ -44,26 +48,30 @@ void Get_Distance_Left(void)
   */
 void Get_Distance_Right(void)
 {
-  u32 temp=0; 
-  u16 dis=0;
+  u16 dis=0,temp=0;
 
-  TIM_Cmd(TIM3,ENABLE);                    //使能定时器2
+  TIM3CH3_CAPTURE_STA=0;
+  TIM_Cmd(TIM3,ENABLE);
   GPIO_SetBits(GPIOC,GPIO_Pin_12);
   delay_us(20);
   GPIO_ResetBits(GPIOC,GPIO_Pin_12);
-
-  while((!(TIM3CH3_CAPTURE_STA&0X80))&&(SysTick->VAL>100));
+  while((!(TIM3CH3_CAPTURE_STA&0X80))&&(SysTick->VAL>4500));
   if(TIM3CH3_CAPTURE_STA&0X80)
   {
-    temp+=TIM3CH3_CAPTURE_VAL;             //得到总的高电平时间
-    dis=temp*170;
-    dis /= 10;
-//    limitfilter(&dis);
- //   kalmanfilter1(&dis);
-    distance.left=dis;
-    __Sensordata.dis_left=dis;
+    LED_TOGGLE();
+    temp = TIM3CH3_CAPTURE_VAL;             //得到总的高电平时间
+    dis = temp * 170 / 1000;
+    //limitfilter(&dis,distance.front);
+    kalmanfilter(&dis);
+    dis/=10;
+    distance.right=dis;
+    __Sensordata.dis_right=(int)dis;
   }
-  TIM_Cmd(TIM3,DISABLE);                   //失能定时器2
+  else
+  {
+    TIM_OC3PolarityConfig(TIM3,TIM_ICPolarity_Rising);       //设置为上升沿捕获
+  }
+  TIM_Cmd(TIM3,DISABLE);                   //失能定时器3
   TIM3CH3_CAPTURE_STA=0;                   //开启下一次捕获
 }
 
@@ -71,21 +79,19 @@ void Get_Distance_Front(void)
 {
   u16 dis=0,temp=0;
 
-	TIM2CH2_CAPTURE_STA=0;
+  TIM2CH2_CAPTURE_STA=0;
   TIM_Cmd(TIM2,ENABLE);                     //使能定时器2
-  GPIO_SetBits(GPIOC,GPIO_Pin_13);
+  GPIO_SetBits(GPIOC,GPIO_Pin_11);
   delay_us(20);
-  GPIO_ResetBits(GPIOC,GPIO_Pin_13);
+  GPIO_ResetBits(GPIOC,GPIO_Pin_11);
   while((!(TIM2CH2_CAPTURE_STA&0X80))&&(SysTick->VAL>4500));
   if(TIM2CH2_CAPTURE_STA&0X80)
   {
     LED_TOGGLE();
     temp = TIM2CH2_CAPTURE_VAL;             //得到总的高电平时间
     dis = temp * 170 / 1000;
-    __Sensordata.dis_left=(int)dis;
-    limitfilter(&dis);
+    //limitfilter(&dis,distance.front);
     kalmanfilter(&dis);
-    __Sensordata.dis_right=(int)dis;
     dis/=10;
     distance.front=dis;
     __Sensordata.dis_front=(int)dis;

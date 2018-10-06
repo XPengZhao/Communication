@@ -6,5 +6,5 @@
 #define MeasureNoise_R 0.11
 #define ProcessNiose_Q 0.03
 void kalmanfilter(u16 *z_measure);
-void limitfilter(u16 *measure);
+void limitfilter(u16 *measure,u16 refer);
 #endif

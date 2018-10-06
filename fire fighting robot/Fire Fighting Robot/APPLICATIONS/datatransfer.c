@@ -26,7 +26,7 @@ static void Data_Send(u8 *DataToSend, u8 length)
   */
 void DatatransferTask(void)
 {
-  static int8_t flag=0;
+  static u16 flag=0;
   flag++;
   if(flag%2==1)
   {

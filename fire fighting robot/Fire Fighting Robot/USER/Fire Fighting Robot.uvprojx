@@ -570,6 +570,11 @@
               <FileType>1</FileType>
               <FilePath>..\DRIVERS\system.c</FilePath>
             </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\DRIVERS\adc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -609,6 +614,16 @@
               <FileName>parameters.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\parameters.c</FilePath>
+            </File>
+            <File>
+              <FileName>fire_fighting.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\fire_fighting.c</FilePath>
+            </File>
+            <File>
+              <FileName>judge_fire.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\judge_fire.c</FilePath>
             </File>
           </Files>
         </Group>
