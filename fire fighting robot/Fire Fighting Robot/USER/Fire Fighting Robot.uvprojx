@@ -625,6 +625,11 @@
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\judge_fire.c</FilePath>
             </File>
+            <File>
+              <FileName>search.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\search.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

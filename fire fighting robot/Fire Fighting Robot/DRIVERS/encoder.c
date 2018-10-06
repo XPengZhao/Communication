@@ -1,6 +1,6 @@
 #include "main.h"
-vu8 left_encoder_count;
-vu8 right_encoder_count;
+vu32 left_encoder_count;
+vu32 right_encoder_count;
 
 void EXTIX_Init(void)
 {

@@ -4,4 +4,3 @@
 void fire_fighting(void);
 
 #endif
-

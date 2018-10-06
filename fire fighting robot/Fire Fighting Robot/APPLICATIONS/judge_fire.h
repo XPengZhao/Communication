@@ -2,15 +2,12 @@
 #define JUDGE_FIRE_H
 #include "main.h"
 
-#define no_fire  0
+#define no_fire       0
 #define fire_on_left  1
-#define fire_in_front 2
-#define fire_on_right 3
+#define fire_on_right 2
 
+extern u8 judge_result;
 
-
-u8 judge_fire(void);
+void judge_fire(void);
 
 #endif
-
-

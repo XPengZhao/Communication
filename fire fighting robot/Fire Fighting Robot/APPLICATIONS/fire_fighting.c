@@ -3,28 +3,29 @@
 /**/
 void fire_fighting()
 {
-  u8 temp;
-  temp=judge_fire();
+    
+    if(judge_result==fire_on_left){      //???????
+      FanMotor_Open();                   //???
+      turn_left45();                     //??45
+      delay_ms(1000);                    //??????1000ms
+      turn_left45_return();              //??
+      FanMotor_Close();                  //???
+      FSMflag=TASKLOOP_FLAG;             //????????????????
+    }
 
-  switch (temp)
-  {
-    case fire_on_left:              //¶æ»ú0¡ãÎ»ÖÃÊÇÆ«×ó45¡ã
+    if(judge_result==fire_on_right){
       FanMotor_Open();
-      break;
-    case fire_in_front:
-      FanSteering(45);
-
-      FanMotor_Open();
-      break;
-    case fire_on_right:
-      FanSteering(90);
-      FanMotor_Open();
-      break;
-    case no_fire:
+      turn_right45();
+      delay_ms(1000);
+      turn_right45_return();
+      FanMotor_Close();
+      FSMflag=TASKLOOP_FLAG;
+    }
+    
+    if(judge_result==no_fire){
       FanMotor_Close();
       return;
-    default : return;		
-  }
+    }
+
   return ;
 }
-
