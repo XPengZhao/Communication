@@ -31,7 +31,8 @@ typedef struct{
   int8_t max;
 }FuzzyD;
 
-void Speed_Control(void);
+
 void Pos_ControlRight(void);
+void Pos_ControlEncoder(void);
 
 #endif

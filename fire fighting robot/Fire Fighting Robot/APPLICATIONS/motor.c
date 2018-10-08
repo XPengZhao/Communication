@@ -52,25 +52,24 @@ void FanMotor_Close()
   GPIO_ResetBits(GPIOD,GPIO_Pin_15);
 }
 
-////////////////////用延时左右转90度函数转完即停//////////////////////////////////////////////
-void turn_left_withdelay()							//
+////////////////////用延时左右转90度函数转完即停//////////////////////////////////
+void turn_left_withdelay()
 {
-  							//
-  MotorLeft(-50);																																							//					
-  MotorRight(50);																																							//
-  delay_ms(440);																																							//
-  MotorLeft(0);																																								//
-  MotorRight(0);																																							//
-}																																															//	
-void turn_right_withdelay()																																		//
-{																																															//
-  MotorLeft(50);																																							//
-  MotorRight(-50);																																						//
-  delay_ms(445);																																							//
-  MotorLeft(0);																																								//
-  MotorRight(0);																																							//
-}												  																																		//
-////////////////////////////////////////////////////////////////////////////////////////////////
+  MotorLeft(-50);
+  MotorRight(50);
+  delay_ms(440) ;
+  MotorLeft(0)  ;
+  MotorRight(0) ;
+}
+
+void turn_right_withdelay()
+{
+  MotorLeft(50)  ;
+  MotorRight(-50);
+  delay_ms(445)  ;
+  MotorLeft(0)   ;
+}
+/////////////////////////////////////////////////////////////////////////////
 
 
 

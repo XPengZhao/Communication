@@ -87,7 +87,12 @@ void Pos_ControlRight(void)
 
 }
 
-void Speed_Control(void)
+void Pos_ControlEncoder(void)
 {
-
+  int e,de;
+  float kp=14,u=0;
+  e=left_encoder_count-right_encoder_count;    //>0 вСбж©Лё╩<0 србжбЩ
+  u=kp*e;
+  MotorLeft(100-u);
+  MotorRight(100+u);
 }

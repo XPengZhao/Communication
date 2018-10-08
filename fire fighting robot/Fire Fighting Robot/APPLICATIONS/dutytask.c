@@ -12,6 +12,8 @@ void taskloop(void)
     Duty_50ms();
   if(system_10ms%10==0)
     Duty_100ms();
+  if(system_10ms%50==0)
+    Duty_500ms();
   if(system_10ms%100==0)
     Duty_1000ms();
 }
@@ -23,8 +25,8 @@ void Duty_10ms(void)
 
 void Duty_20ms(void)
 {
-  GetCarInfo();
-  Pos_ControlRight();
+  //GetCarInfo();
+  //Pos_ControlRight();
 }
 
 void Duty_50ms(void)
@@ -35,6 +37,11 @@ void Duty_50ms(void)
 void Duty_100ms(void)
 {
 
+}
+
+void Duty_500ms(void)
+{
+  Pos_ControlEncoder();
 }
 
 void Duty_1000ms(void)
