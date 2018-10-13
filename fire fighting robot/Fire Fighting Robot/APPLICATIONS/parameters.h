@@ -3,5 +3,6 @@
 #include "main.h" 
 
 void SenserOffsetInit(void);
+void SensordataReset(void);
 
 #endif

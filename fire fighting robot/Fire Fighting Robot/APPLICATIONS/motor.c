@@ -129,3 +129,23 @@ void turn_right45_return()
   MotorLeft(0);
 }
 
+void TurnLeft_WithFW(void)
+{
+  Get_Distance_Front();
+  if(distance.front<17)
+    turn_left_withdelay();
+  
+}
+
+void TurnLeft_WithNFW(void)
+{
+  u32 leftcount=0,rightcount=0;
+}
+
+
+void TurnRight_WithFW(void)
+{
+  Get_Distance_Front();
+  if(distance.front<17)
+    turn_right_withdelay();
+}

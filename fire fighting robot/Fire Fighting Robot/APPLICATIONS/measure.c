@@ -26,7 +26,7 @@ void Get_Distance_Left(void)
     temp = TIM5CH3_CAPTURE_VAL;             //得到总的高电平时间
     dis = temp * 170 / 1000;
     //limitfilter(&dis,distance.front);
-    kalmanfilter(&dis);
+    kalmanfilter_l(&dis);
     dis/=10;
     distance.left=dis;
     __Sensordata.dis_left=(int)dis;
@@ -62,7 +62,7 @@ void Get_Distance_Right(void)
     temp = TIM3CH3_CAPTURE_VAL;             //得到总的高电平时间
     dis = temp * 170 / 1000;
     //limitfilter(&dis,distance.front);
-    kalmanfilter(&dis);
+    kalmanfilter_r(&dis);
     dis/=10;
     distance.right=dis;
     __Sensordata.dis_right=(int)dis;
@@ -91,7 +91,7 @@ void Get_Distance_Front(void)
     temp = TIM2CH2_CAPTURE_VAL;             //得到总的高电平时间
     dis = temp * 170 / 1000;
     //limitfilter(&dis,distance.front);
-    kalmanfilter(&dis);
+    //kalmanfilter(&dis);
     dis/=10;
     distance.front=dis;
     __Sensordata.dis_front=(int)dis;

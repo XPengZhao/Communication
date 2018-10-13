@@ -606,11 +606,6 @@
               <FilePath>..\APPLICATIONS\motor.c</FilePath>
             </File>
             <File>
-              <FileName>fliter.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\APPLICATIONS\fliter.c</FilePath>
-            </File>
-            <File>
               <FileName>parameters.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\parameters.c</FilePath>
@@ -629,6 +624,11 @@
               <FileName>search.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\search.c</FilePath>
+            </File>
+            <File>
+              <FileName>filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\filter.c</FilePath>
             </File>
           </Files>
         </Group>

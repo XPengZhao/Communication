@@ -53,5 +53,7 @@ void SysTick_Handler(void)
     case SENSOROFFSET_FLAG: SenserOffsetInit();break;
     case TASKLOOP_FLAG:     taskloop();break;
     case FIRE_FLAG:         fire_fighting();break;
+    case SENSORRESET_FLAG:  SensordataReset();break;
+    case TURN_FLAG:         Turn();break;
   }
 }

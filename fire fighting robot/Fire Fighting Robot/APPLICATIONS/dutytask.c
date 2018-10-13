@@ -25,13 +25,19 @@ void Duty_10ms(void)
 
 void Duty_20ms(void)
 {
-  //GetCarInfo();
-  //Pos_ControlRight();
+  Navigate();
 }
 
 void Duty_50ms(void)
 {
-
+  if(GetCarInfo())
+  {
+    update_info();
+    if(turn_flag)
+    {
+      FSMflag=TURN_FLAG;
+    }
+  }
 }
 
 void Duty_100ms(void)
@@ -46,4 +52,5 @@ void Duty_500ms(void)
 
 void Duty_1000ms(void)
 {
+  //Angle_AdjustRight();
 }

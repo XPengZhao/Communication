@@ -18,5 +18,9 @@ void turn_right(void);            //use encoder
 
 void turn_right_withdelay(void);  //use delay_ms()
 void turn_left_withdelay(void);
+
+void TurnLeft_WithFW(void);
+void TurnRight_WithFW(void);
+
 #endif
 
