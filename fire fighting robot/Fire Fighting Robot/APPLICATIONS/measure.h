@@ -13,4 +13,5 @@ extern Distance distance;
 void Get_Distance_Left(void);
 void Get_Distance_Right(void);
 void Get_Distance_Front(void);
+void Get_Distance(void);
 #endif

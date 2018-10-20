@@ -630,6 +630,11 @@
               <FileType>1</FileType>
               <FilePath>..\APPLICATIONS\filter.c</FilePath>
             </File>
+            <File>
+              <FileName>action.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APPLICATIONS\action.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

@@ -132,8 +132,7 @@ void Usart1_Send(unsigned char *DataToSend,u8 data_num)
 
 void USART1_IRQHandler(void)
 {
-  //u8 buff;
-  if(USART_GetITStatus(USART1,USART_IT_IDLE)!= RESET)				//总线空闲
+  if(USART_GetITStatus(USART1,USART_IT_IDLE)!= RESET)          //总线空闲
   {
     //clear the idle pending flag 
     (void)USART1->SR;

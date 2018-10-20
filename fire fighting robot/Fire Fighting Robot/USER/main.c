@@ -3,7 +3,7 @@
 int main(void)
 {
   Driver_Init();
-	while(1)
-	{
-	}
+  while(1)
+  {
+  }
 }

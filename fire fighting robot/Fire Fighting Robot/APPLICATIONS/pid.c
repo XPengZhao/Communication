@@ -157,7 +157,12 @@ void Pos_ControlLeft(void)
 
 }
 
-void Pos_ControlEncoder(void)
+
+/**
+  * @brief 通过编码器走直线
+  *
+  */
+void GoStraight(void)
 {
   int e;
   float kp=14,u=0;

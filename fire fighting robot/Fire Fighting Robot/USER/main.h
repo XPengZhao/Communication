@@ -28,5 +28,6 @@
 #include "judge_fire.h"
 #include "fire_fighting.h"
 #include "search.h"
+#include "action.h"
 
 #endif

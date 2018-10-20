@@ -12,7 +12,7 @@ void SenserOffsetInit(void)
   }
   if(count==500)        //5s
   {
-    FSMflag=TASKLOOP_FLAG;
+    FSMFlagNext=FINDROOM_FLAG;
   }
   count++;
 }
@@ -23,5 +23,5 @@ void SensordataReset(void)
   right_encoder_count=0;
   Get_Distance_Right();
   Get_Distance_Left();
-  FSMflag=TASKLOOP_FLAG;
+  FSMFlagNext=FINDROOM_FLAG;
 }

@@ -5,9 +5,9 @@ static u8  fac_us=0;              //us延时倍乘数
 void SysTick_Init()
 {
   u32 reload=0;
-  fac_us=SystemCoreClock/8000000;                          //每个us需要的systick时钟数
-  reload=SystemCoreClock/8000*10;                           //reload值为10ms需要的systick时钟数
-  SysTick->LOAD  = (reload & SysTick_LOAD_RELOAD_Msk) - 1; //每10ms中断一次
+  fac_us=SystemCoreClock/8000000;                          //每个us需要的systick时钟数=9
+  reload=SystemCoreClock/8000*25;                           //reload值为25ms需要的systick时钟数=225000
+  SysTick->LOAD  = (reload & SysTick_LOAD_RELOAD_Msk) - 1; //每25ms中断一次
   NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
   SysTick->VAL   = 0;
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);    //选择外部时钟  HCLK/8
@@ -48,12 +48,9 @@ void delay_ms(u16 nms)
 void SysTick_Handler(void)
 {
 
-  switch(FSMflag)
+  switch(FSMFlagNext)
   {
     case SENSOROFFSET_FLAG: SenserOffsetInit();break;
-    case TASKLOOP_FLAG:     taskloop();break;
-    case FIRE_FLAG:         fire_fighting();break;
-    case SENSORRESET_FLAG:  SensordataReset();break;
-    case TURN_FLAG:         Turn();break;
+    case FINDROOM_FLAG:     taskloop();break;
   }
 }

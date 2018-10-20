@@ -7,5 +7,4 @@
 #define ProcessNiose_Q 0.03
 void kalmanfilter_r(u16 *z_measure);
 void kalmanfilter_l(u16 *z_measure);
-void limitfilter(u16 *measure,u16 refer);
 #endif

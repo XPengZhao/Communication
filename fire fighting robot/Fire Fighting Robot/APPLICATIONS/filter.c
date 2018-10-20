@@ -14,7 +14,7 @@ void kalmanfilter_r(u16 *z_measure)
   static float x_mid1,x_last1=0,p_mid1,p_last1=0,p_now1,x_now1=0;
   static float Q1=ProcessNiose_Q,kg1,R1=MeasureNoise_R;
   static int8_t init_flag1=0;
-  if(FSMflag==SENSORRESET_FLAG)
+  if(FSMFlagNext==SENSORRESET_FLAG)
   {
     init_flag1=0;
   }
@@ -38,7 +38,7 @@ void kalmanfilter_l(u16 *z_measure)
   static float x_mid2,x_last2=0,p_mid2,p_last2=0,p_now2,x_now2=0;
   static float Q2=ProcessNiose_Q,kg2,R2=MeasureNoise_R;
   static int8_t init_flag2=0;
-  if(FSMflag==SENSORRESET_FLAG)
+  if(FSMFlagNext==SENSORRESET_FLAG)
   {
     init_flag2=0;
   }
@@ -55,14 +55,4 @@ void kalmanfilter_l(u16 *z_measure)
   p_last2=p_now2;                         //更新covariance 值
   x_last2=x_now2;                            //更新系统状态值
   *z_measure=(u16)x_now2;
-}
-
-//滤掉粗大误差
-void limitfilter(u16 *measure,u16 refer)
-{
-  int16_t err=*measure-refer;
-  if(err>20||err<20)
-  {
-    *measure=refer;
-  }
 }

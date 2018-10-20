@@ -10,7 +10,7 @@ void fire_fighting()
       delay_ms(1000);                       //对着目的点吹1000ms
       turn_left45_return();                 //回正
       FanMotor_Close();                     //关风扇
-      FSMflag=TASKLOOP_FLAG;                 //灭完火之后让任务状态变为日常任务
+      FSMFlagNext=FINDROOM_FLAG;                 //灭完火之后让任务状态变为日常任务
     }
 
     if(judge_result==fire_on_right){
@@ -19,7 +19,7 @@ void fire_fighting()
       delay_ms(1000);
       turn_right45_return();
       FanMotor_Close();
-      FSMflag=TASKLOOP_FLAG;
+      FSMFlagNext=FINDROOM_FLAG;
     }
     
     if(judge_result==no_fire){

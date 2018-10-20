@@ -33,7 +33,7 @@ typedef struct{
 
 
 void Pos_ControlRight(void);
-void Pos_ControlEncoder(void);
 void Pos_ControlLeft(void);
+void GoStraight(void);
 
 #endif

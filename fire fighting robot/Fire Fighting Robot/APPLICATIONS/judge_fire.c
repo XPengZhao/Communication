@@ -13,12 +13,12 @@ void judge_fire()       //ÅĞ¶ÏÊÇ·ñÓĞ»ğÔ´
 
   if(temp1<1){
     judge_result=fire_on_left;
-    FSMflag=FIRE_FLAG;
+    FSMFlagNext=PUTOUTFLAG;
   }
   
   else if(temp3<1){
     judge_result=fire_on_right;
-    FSMflag=FIRE_FLAG;
+    FSMFlagNext=PUTOUTFLAG;
   }
   else
     judge_result=no_fire;
