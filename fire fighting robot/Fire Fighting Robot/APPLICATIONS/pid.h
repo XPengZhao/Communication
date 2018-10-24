@@ -35,5 +35,6 @@ typedef struct{
 void Pos_ControlRight(void);
 void Pos_ControlLeft(void);
 void GoStraight(void);
-
+void pid_left(void);
+void AngleAdjust_L(void);
 #endif

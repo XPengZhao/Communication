@@ -1,6 +1,8 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
+#include "main.h" 
+
 #define WHEEL_DIR 7
 #define ONESTEP 41.5
 
@@ -10,6 +12,7 @@
 extern u8 FSMFlagNext;
 extern u8 FSMFlagNow;
 extern u8 FSMFlagLast;
+extern u8 RoomNumber;
 
 #define SENSOROFFSET_FLAG  1
 #define FINDROOM_FLAG      2

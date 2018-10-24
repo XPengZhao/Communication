@@ -4,6 +4,8 @@
 #define TURNLEFT 1
 #define TURNRIGHT 2
 
+extern u8 turn_direction;
+
 void CheckTurn(void);
 void Turn(void);
 

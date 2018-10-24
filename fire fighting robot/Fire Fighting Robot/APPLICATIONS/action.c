@@ -14,11 +14,13 @@ void CheckTurn(void)
   {
     if(distance.right>40)
     {
-      turn_right_withdelay();
+      FSMFlagNext=TURN_FLAG;
+      turn_direction=TURNLEFT;
     }
     else if(distance.left>40)
     {
-      turn_left_withdelay();
+      FSMFlagNext=TURN_FLAG;
+      turn_direction=TURNRIGHT;
     }
   }
 }
@@ -47,7 +49,7 @@ void turn_right_withdelay()
 
 void Turn(void)
 {
-  FSMFlagNow=FSMFlagNext;
+  //转弯部分
   if(turn_direction==TURNRIGHT)
   {
     turn_right_withdelay();
@@ -56,14 +58,12 @@ void Turn(void)
   {
     turn_left_withdelay();
   }
-  switch(FSMFlagLast)
-  {
-    case FINDROOM_FLAG:    FSMFlagNext=FINDROOM_FLAG;break;
-    case ENTERROOM_FLAG:   FSMFlagNext=SEARCHFIRE_FLAG;break;
-    case SEARCHFIRE_FLAG:  FSMFlagNext=SEARCHFIRE_FLAG;break;
-    case OUTROOM_FLAG:     FSMFlagNext=OUTROOM_FLAG;break;
-  }
-  FSMFlagLast=FSMFlagNow;
+
+  //重置传感器部分
+  Get_Distance();
+  left_encoder_count=0;
+  right_encoder_count=0;
+
 }
 
 /////////////////////////////////////////////////////////////////////////////

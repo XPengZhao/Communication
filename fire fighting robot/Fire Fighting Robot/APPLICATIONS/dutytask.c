@@ -19,11 +19,16 @@ void taskloop(void)
 void Duty_25ms(void)
 {
   DatatransferTask();
+  //Pos_ControlLeft();
+  //MotorRight(52);
+  //MotorLeft(53);
+  // AngleAdjust_L();
+  //FindRoom(1);
 }
 
 void Duty_50ms(void)
 {
-  Get_Distance();
+  
 }
 
 void Duty_100ms(void)
@@ -33,6 +38,7 @@ void Duty_100ms(void)
 
 void Duty_500ms(void)
 {
+  //AngleAdjust_L();
 }
 
 void Duty_1000ms(void)

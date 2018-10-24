@@ -6,12 +6,15 @@
 void SenserOffsetInit(void)
 {
   static u16 count=0;
-  if(count%10==0)       //100ms
+  if(count%5==0)       //100ms
   {
+    Get_Distance_Left();
     Get_Distance_Right();
   }
-  if(count==500)        //5s
+  if(count==250)        //5s
   {
+   // MotorLeft(86);
+   // MotorRight(100);
     FSMFlagNext=FINDROOM_FLAG;
   }
   count++;
