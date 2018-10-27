@@ -1,6 +1,8 @@
 #ifndef ACTION_H
 #define ACTION_H
 
+#include "main.h"
+
 #define TURNLEFT 1
 #define TURNRIGHT 2
 

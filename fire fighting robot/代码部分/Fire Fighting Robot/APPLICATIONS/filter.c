@@ -1,5 +1,7 @@
 #include "main.h"
 
+static u8 __FilterFlush_l=0;
+static u8 __FilterFlush_r=0;
 /*
 Q:过程噪声，Q增大，动态响应变快，收敛稳定性变坏
 R:测量噪声，R增大，动态响应变慢，收敛稳定性变好
@@ -13,11 +15,10 @@ void kalmanfilter_r(u16 *z_measure)
 {
   static float x_mid1,x_last1=0,p_mid1,p_last1=0,p_now1,x_now1=0;
   static float Q1=ProcessNiose_Q,kg1,R1=MeasureNoise_R;
-  static int8_t init_flag1=0;
 
-  if(!init_flag1)
+  if(!__FilterFlush_r)
   {
-    init_flag1=1;
+    __FilterFlush_r=1;
     x_last1=*z_measure;
   }
   x_mid1=x_last1;                         //预测与上一时刻一致
@@ -34,11 +35,10 @@ void kalmanfilter_l(u16 *z_measure)
 {
   static float x_mid2,x_last2=0,p_mid2,p_last2=0,p_now2,x_now2=0;
   static float Q2=ProcessNiose_Q,kg2,R2=MeasureNoise_R;
-  static int8_t init_flag2=0;
 
-  if(!init_flag2)
+  if(!__FilterFlush_l)
   {
-    init_flag2=1;
+    __FilterFlush_l=1;
     x_last2=*z_measure;
   }
   x_mid2=x_last2;                       //预测与上一时刻一致
@@ -49,4 +49,10 @@ void kalmanfilter_l(u16 *z_measure)
   p_last2=p_now2;                         //更新covariance 值
   x_last2=x_now2;                            //更新系统状态值
   *z_measure=(u16)x_now2;
+}
+
+void FilterFlush(void)
+{
+  __FilterFlush_l=0;
+  __FilterFlush_r=0;
 }

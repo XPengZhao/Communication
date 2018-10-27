@@ -31,6 +31,4 @@ void Duty_100ms(void)
 
 void Duty_500ms(void)
 {
-    DatatransferTask();
-    Get_Distance();
 }

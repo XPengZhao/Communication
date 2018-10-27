@@ -20,7 +20,7 @@ void Duty_25ms(void)
 
 void Duty_50ms(void)
 {
-  
+
 }
 
 void Duty_100ms(void)
@@ -31,5 +31,6 @@ void Duty_100ms(void)
 void Duty_500ms(void)
 {
   DatatransferTask();
+  FilterFlush();
   Get_Distance();
 }
