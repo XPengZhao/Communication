@@ -4,8 +4,8 @@
 #include "stm32f10x.h"
 
 void taskloop(void);
-void Duty_25ms(void);
-void Duty_50ms(void);
-void Duty_100ms(void);
-void Duty_500ms(void);
+void Duty_20ms(void);
+void Duty_40ms(void);
+void Duty_80ms(void);
+void Duty_400ms(void);
 #endif

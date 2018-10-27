@@ -204,13 +204,13 @@ Section Cross References
     adc.o(i.Get_Adc) refers to stm32f10x_adc.o(i.ADC_GetConversionValue) for ADC_GetConversionValue
     adc.o(i.Get_Adc_Average) refers to adc.o(i.Get_Adc) for Get_Adc
     adc.o(i.Get_Adc_Average) refers to delay.o(i.delay_us) for delay_us
-    dutytask.o(i.Duty_500ms) refers to datatransfer.o(i.DatatransferTask) for DatatransferTask
-    dutytask.o(i.Duty_500ms) refers to measure.o(i.Get_Distance) for Get_Distance
-    dutytask.o(i.taskloop) refers to dutytask.o(i.Duty_25ms) for Duty_25ms
-    dutytask.o(i.taskloop) refers to dutytask.o(i.Duty_50ms) for Duty_50ms
-    dutytask.o(i.taskloop) refers to dutytask.o(i.Duty_100ms) for Duty_100ms
-    dutytask.o(i.taskloop) refers to dutytask.o(i.Duty_500ms) for Duty_500ms
-    dutytask.o(i.taskloop) refers to dutytask.o(.data) for system_25ms
+    dutytask.o(i.Duty_400ms) refers to datatransfer.o(i.DatatransferTask) for DatatransferTask
+    dutytask.o(i.Duty_400ms) refers to measure.o(i.Get_Distance) for Get_Distance
+    dutytask.o(i.taskloop) refers to dutytask.o(i.Duty_20ms) for Duty_20ms
+    dutytask.o(i.taskloop) refers to dutytask.o(i.Duty_40ms) for Duty_40ms
+    dutytask.o(i.taskloop) refers to dutytask.o(i.Duty_80ms) for Duty_80ms
+    dutytask.o(i.taskloop) refers to dutytask.o(i.Duty_400ms) for Duty_400ms
+    dutytask.o(i.taskloop) refers to dutytask.o(.data) for system_20ms
     pid.o(i.AngleAdjust_L) refers to measure.o(i.Get_Distance_Left) for Get_Distance_Left
     pid.o(i.AngleAdjust_L) refers to motor.o(i.MotorLeft) for MotorLeft
     pid.o(i.AngleAdjust_L) refers to motor.o(i.MotorRight) for MotorRight
@@ -1226,10 +1226,10 @@ Image Symbol Table
     i.DatatransferTask                       0x08000884   Section        0  datatransfer.o(i.DatatransferTask)
     i.DebugMon_Handler                       0x0800093c   Section        0  stm32f10x_it.o(i.DebugMon_Handler)
     i.Driver_Init                            0x0800093e   Section        0  driver.o(i.Driver_Init)
-    i.Duty_100ms                             0x0800096a   Section        0  dutytask.o(i.Duty_100ms)
-    i.Duty_25ms                              0x0800096c   Section        0  dutytask.o(i.Duty_25ms)
-    i.Duty_500ms                             0x0800096e   Section        0  dutytask.o(i.Duty_500ms)
-    i.Duty_50ms                              0x0800097a   Section        0  dutytask.o(i.Duty_50ms)
+    i.Duty_80ms                             0x0800096a   Section        0  dutytask.o(i.Duty_80ms)
+    i.Duty_20ms                              0x0800096c   Section        0  dutytask.o(i.Duty_20ms)
+    i.Duty_400ms                             0x0800096e   Section        0  dutytask.o(i.Duty_400ms)
+    i.Duty_40ms                              0x0800097a   Section        0  dutytask.o(i.Duty_40ms)
     i.EXTI3_IRQHandler                       0x0800097c   Section        0  encoder.o(i.EXTI3_IRQHandler)
     i.EXTI4_IRQHandler                       0x080009ac   Section        0  encoder.o(i.EXTI4_IRQHandler)
     i.EXTIX_Init                             0x080009f0   Section        0  encoder.o(i.EXTIX_Init)
@@ -1336,7 +1336,7 @@ Image Symbol Table
     .data                                    0x2000002c   Section        8  encoder.o(.data)
     .data                                    0x20000034   Section       12  timer.o(.data)
     .data                                    0x20000040   Section        4  dutytask.o(.data)
-    system_25ms                              0x20000040   Data           4  dutytask.o(.data)
+    system_20ms                              0x20000040   Data           4  dutytask.o(.data)
     .data                                    0x20000044   Section        6  measure.o(.data)
     .data                                    0x2000004a   Section        2  datatransfer.o(.data)
     flag                                     0x2000004a   Data           2  datatransfer.o(.data)
@@ -1541,10 +1541,10 @@ Image Symbol Table
     DatatransferTask                         0x08000885   Thumb Code   172  datatransfer.o(i.DatatransferTask)
     DebugMon_Handler                         0x0800093d   Thumb Code     2  stm32f10x_it.o(i.DebugMon_Handler)
     Driver_Init                              0x0800093f   Thumb Code    44  driver.o(i.Driver_Init)
-    Duty_100ms                               0x0800096b   Thumb Code     2  dutytask.o(i.Duty_100ms)
-    Duty_25ms                                0x0800096d   Thumb Code     2  dutytask.o(i.Duty_25ms)
-    Duty_500ms                               0x0800096f   Thumb Code    12  dutytask.o(i.Duty_500ms)
-    Duty_50ms                                0x0800097b   Thumb Code     2  dutytask.o(i.Duty_50ms)
+    Duty_80ms                               0x0800096b   Thumb Code     2  dutytask.o(i.Duty_80ms)
+    Duty_20ms                                0x0800096d   Thumb Code     2  dutytask.o(i.Duty_20ms)
+    Duty_400ms                               0x0800096f   Thumb Code    12  dutytask.o(i.Duty_400ms)
+    Duty_40ms                                0x0800097b   Thumb Code     2  dutytask.o(i.Duty_40ms)
     EXTI3_IRQHandler                         0x0800097d   Thumb Code    38  encoder.o(i.EXTI3_IRQHandler)
     EXTI4_IRQHandler                         0x080009ad   Thumb Code    54  encoder.o(i.EXTI4_IRQHandler)
     EXTIX_Init                               0x080009f1   Thumb Code   160  encoder.o(i.EXTIX_Init)
@@ -1745,10 +1745,10 @@ Memory Map of the image
     0x08000884   0x08000884   0x000000b8   Code   RO         3648    i.DatatransferTask  datatransfer.o
     0x0800093c   0x0800093c   0x00000002   Code   RO          172    i.DebugMon_Handler  stm32f10x_it.o
     0x0800093e   0x0800093e   0x0000002c   Code   RO         3480    i.Driver_Init       driver.o
-    0x0800096a   0x0800096a   0x00000002   Code   RO         3534    i.Duty_100ms        dutytask.o
-    0x0800096c   0x0800096c   0x00000002   Code   RO         3535    i.Duty_25ms         dutytask.o
-    0x0800096e   0x0800096e   0x0000000c   Code   RO         3536    i.Duty_500ms        dutytask.o
-    0x0800097a   0x0800097a   0x00000002   Code   RO         3537    i.Duty_50ms         dutytask.o
+    0x0800096a   0x0800096a   0x00000002   Code   RO         3534    i.Duty_80ms        dutytask.o
+    0x0800096c   0x0800096c   0x00000002   Code   RO         3535    i.Duty_20ms         dutytask.o
+    0x0800096e   0x0800096e   0x0000000c   Code   RO         3536    i.Duty_400ms        dutytask.o
+    0x0800097a   0x0800097a   0x00000002   Code   RO         3537    i.Duty_40ms         dutytask.o
     0x0800097c   0x0800097c   0x00000030   Code   RO         3334    i.EXTI3_IRQHandler  encoder.o
     0x080009ac   0x080009ac   0x00000044   Code   RO         3335    i.EXTI4_IRQHandler  encoder.o
     0x080009f0   0x080009f0   0x000000a4   Code   RO         3336    i.EXTIX_Init        encoder.o

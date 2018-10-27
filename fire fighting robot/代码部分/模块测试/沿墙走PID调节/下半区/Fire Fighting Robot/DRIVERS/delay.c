@@ -13,8 +13,8 @@ void SysTick_Init(void)
 {
   u32 reload=0;
   fac_us=SystemCoreClock/8000000;                          //每个us需要的systick时钟数=9
-  reload=SystemCoreClock/8000*25;                          //reload值为25ms需要的systick时钟数=225000
-  SysTick->LOAD  = (reload & SysTick_LOAD_RELOAD_Msk) - 1; //每25ms中断一次
+  reload=SystemCoreClock/8000*20;                          //reload值为20ms需要的systick时钟数=180000
+  SysTick->LOAD  = (reload & SysTick_LOAD_RELOAD_Msk) - 1; //每20ms中断一次
   NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
   SysTick->VAL   = 0;
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);    //选择外部时钟  HCLK/8
