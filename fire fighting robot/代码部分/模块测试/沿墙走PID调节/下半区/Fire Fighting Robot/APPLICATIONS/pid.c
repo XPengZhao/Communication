@@ -8,11 +8,11 @@ static PIDState  pos_pidstate={0,15};
 
 //  int8_t ne_min,ne_two,ne_one,zero,one,two,max;比例参数
 //static FuzzyParam fuzzyparam={-35,-20,-15,0,15,20,35};
-static FuzzyParam fuzzyparam={-33,-20,-13,0,29,36,48};
+static FuzzyParam fuzzyparam={-35,-20,-15,0,15,36,20,35};
 
 //  int8_t ne_min,ne_two,ne_one,zero,one,two,max;微分参数
 //static FuzzyD fuzzyd={28,15,15,40,15,15,28};
-static FuzzyD fuzzyd={29,20,15,5,15,20,29};
+static FuzzyD fuzzyd={28,15,15,5,15,15,28};
 
 /*
 now_dis 本次测量的距离    last_dis 上次测量的距离

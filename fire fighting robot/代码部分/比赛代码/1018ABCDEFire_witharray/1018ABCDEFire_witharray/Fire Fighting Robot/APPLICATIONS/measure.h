@@ -8,9 +8,10 @@ typedef struct{
   int16_t front;
 }Distance;
 
-extern Distance distance;
+extern Distance __distance;
 
 void Get_Distance_Left(void);
 void Get_Distance_Right(void);
 void Get_Distance_Front(void);
+void Get_Distance(void);
 #endif

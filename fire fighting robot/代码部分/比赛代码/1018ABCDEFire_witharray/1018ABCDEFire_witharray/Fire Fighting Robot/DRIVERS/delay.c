@@ -47,11 +47,9 @@ void delay_ms(u16 nms)
 //注释掉了位于stm32f10x_it.c 136行的SysTick_Handler(),避免重定义。
 void SysTick_Handler(void)
 {
-
   switch(FSMflag)
   {
     case SENSOROFFSET_FLAG: SenserOffsetInit();break;
-    case TASKLOOP_FLAG:     taskloop();break;
-    case FIRE_FLAG:         fire_fighting();break;
+    case TASKLOOP_FLAG: taskloop();break;
   }
 }

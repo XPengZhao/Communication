@@ -40,7 +40,7 @@ void Get_Distance_Left(void)
     temp = TIM5CH3_CAPTURE_VAL;            //得到总的高电平时间
     dis = temp * 170 / 1000;
     kalmanfilter_l(&dis);
-    //dis=dis/10;
+    dis=dis/10;
     __distance.left=dis;
   }
   else{
@@ -92,7 +92,7 @@ void Get_Distance_Right(void)
     temp = TIM3CH3_CAPTURE_VAL;             //得到总的高电平时间
     dis = temp * 170 / 1000;
     kalmanfilter_r(&dis);
-    //dis/=10;
+    dis/=10;
     __distance.right=dis;
   }
   else
@@ -135,7 +135,7 @@ void Get_Distance_Front(void)
   if(TIM2CH2_CAPTURE_STA&0X80){
     temp = TIM2CH2_CAPTURE_VAL;             //得到总的高电平时间
     dis = temp * 170 / 1000;
-    //dis/=10;
+    dis/=10;
     __distance.front=dis;
   }
   else{

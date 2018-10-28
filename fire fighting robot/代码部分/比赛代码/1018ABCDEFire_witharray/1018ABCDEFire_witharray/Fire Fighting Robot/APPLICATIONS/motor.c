@@ -60,6 +60,7 @@ void turn_left_withdelay()
   delay_ms(450) ;
   MotorLeft(0)  ;
   MotorRight(0) ;
+  FilterFlush();
 }
 
 void turn_right_withdelay()
@@ -68,7 +69,8 @@ void turn_right_withdelay()
   MotorRight(-50);
   delay_ms(470)  ;
   MotorLeft(0)   ;
-	MotorRight(0);
+  MotorRight(0);
+  FilterFlush();
 }
 /////////////////////////////////////////////////////////////////////////////
 

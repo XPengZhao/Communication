@@ -22,7 +22,7 @@ void Pos_ControlRight(void)
 {
     float e=0,de=0,ctrl_signal=0;
     Get_Distance_Right();
-    e = pos_pidstate.Target - distance.right;
+    e = pos_pidstate.Target - __distance.right;
     de = e - pos_pidstate.Error;
     pos_pidstate.Error = e;
 
@@ -73,7 +73,7 @@ void Pos_ControlRight(void)
     else if(e<0)             //??
     {
       MotorLeft(100);
-      MotorRight(100+ctrl_signal+de*16);
+      MotorRight(100+ctrl_signal);
     }
     else if(de>0)       //????
     {
@@ -83,7 +83,7 @@ void Pos_ControlRight(void)
     else                //????
     {
       MotorLeft(100);
-      MotorRight(100+ctrl_signal+de*16);
+      MotorRight(100+ctrl_signal);
     }
 
 }
@@ -92,7 +92,7 @@ void Pos_ControlLeft(void)
 {
     float e=0,de=0,ctrl_signal=0;
     Get_Distance_Left();
-    e = pos_pidstate.Target - distance.left;
+    e = pos_pidstate.Target - __distance.left;
     de = e - pos_pidstate.Error;
     pos_pidstate.Error = e;
 
