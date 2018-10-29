@@ -1,6 +1,6 @@
 #include "main.h"
-vu32 left_encoder_count;
-vu32 right_encoder_count;
+vu32 __left_encoder_count;
+vu32 __right_encoder_count;
 
 void EXTIX_Init(void)
 {
@@ -51,8 +51,8 @@ void EXTIX_Init(void)
 void EXTI3_IRQHandler(void)
 {
   if(EXTI_GetITStatus(EXTI_Line3)!=RESET){
-    left_encoder_count++;
-    __Sensordata.wheel_left=left_encoder_count;
+    __left_encoder_count++;
+    __Sensordata.wheel_left=__left_encoder_count;
     EXTI_ClearITPendingBit(EXTI_Line3); //清除LINE3上的中断标志位  
   }
 }
@@ -61,8 +61,8 @@ void EXTI3_IRQHandler(void)
 void EXTI4_IRQHandler(void)
 {
   if(EXTI_GetITStatus(EXTI_Line4)!=RESET){
-    right_encoder_count++;
-    __Sensordata.wheel_right=right_encoder_count;
+    __right_encoder_count++;
+    __Sensordata.wheel_right=__right_encoder_count;
     EXTI_ClearITPendingBit(EXTI_Line4);   //清除LINE0上的中断标志位
   }
 }

@@ -57,20 +57,22 @@ void turn_left_withdelay()
 {
   MotorLeft(-50);
   MotorRight(50);
-  delay_ms(450) ;
+  delay_ms(390) ;
   MotorLeft(0)  ;
   MotorRight(0) ;
-  FilterFlush();
+  FilterFlush() ;
+  FlushPIDparam();
 }
 
 void turn_right_withdelay()
 {
   MotorLeft(50)  ;
   MotorRight(-50);
-  delay_ms(470)  ;
+  delay_ms(405)  ;
   MotorLeft(0)   ;
-  MotorRight(0);
-  FilterFlush();
+  MotorRight(0)  ;
+  FilterFlush()  ;
+  FlushPIDparam();
 }
 /////////////////////////////////////////////////////////////////////////////
 
@@ -78,22 +80,22 @@ void turn_right_withdelay()
 
 void turn_left(void)
 {
-  left_encoder_count=0;
-  right_encoder_count=0;
+  __left_encoder_count=0;
+  __right_encoder_count=0;
   MotorRight(50);
   MotorLeft(-50);
-  while(right_encoder_count<12);				//0.7327cm/脉是encoder的分辨率 25*0.7327=18.32cm
+  while(__right_encoder_count<12);				//0.7327cm/脉是encoder的分辨率 25*0.7327=18.32cm
   MotorLeft(0);
   MotorRight(0);
 }
 
 void turn_right(void)
 {
-  left_encoder_count=0;
-  right_encoder_count=0;
+  __left_encoder_count=0;
+  __right_encoder_count=0;
   MotorRight(-50);
   MotorLeft(50);
-  while(left_encoder_count<12);
+  while(__left_encoder_count<12);
   MotorLeft(0);
   MotorRight(0);
 }
@@ -104,7 +106,7 @@ void turn_left45()
 	MotorLeft(0);
 	MotorRight(0);
 	
-  MotorRight(20);
+  MotorRight(15);
   MotorLeft(0);
   delay_ms(900);
   MotorRight(0);
@@ -124,7 +126,7 @@ void turn_right45()
   MotorRight(0);
 	MotorLeft(0);
 	
-  MotorLeft(20);
+  MotorLeft(15);
   delay_ms(900);
   
 	MotorLeft(0);

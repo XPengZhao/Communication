@@ -4,12 +4,8 @@
 
 
 typedef struct{
-  float P,I,D,FF,MaxError;
+  int16_t Target,Error_r,Error_l,MaxError;
 }PIDParams;
-
-typedef struct{
-  float Error,Target;
-}PIDState;
 
 typedef struct{
   int8_t ne_min;
@@ -34,7 +30,6 @@ typedef struct{
 
 void Pos_ControlRight(void);
 void Pos_ControlLeft(void);
+void FlushPIDparam(void);
 void GoStraight(void);
-void pid_left(void);
-void AngleAdjust_L(void);
 #endif

@@ -1,14 +1,11 @@
 #include "main.h"
 
-//  float P,I,D,FF,MaxError
-static PIDParams pos_pidparam={0,0,0,0,80};
-
-//  float Error,Target;
-static PIDState  pos_pidstate={0,15};
+//  int16_t Target,Error_r,Error_l,MaxError
+static PIDParams pos_pidparam={14,0,0,80};
 
 //  int8_t ne_min,ne_two,ne_one,zero,one,two,max;比例参数
 //static FuzzyParam fuzzyparam={-35,-20,-15,0,15,20,35};
-static FuzzyParam fuzzyparam={-35,-20,-15,0,15,36,20,35};
+static FuzzyParam fuzzyparam={-35,-20,-15,0,15,20,35};
 
 //  int8_t ne_min,ne_two,ne_one,zero,one,two,max;微分参数
 //static FuzzyD fuzzyd={28,15,15,40,15,15,28};
@@ -22,9 +19,9 @@ void Pos_ControlRight(void)
 {
     float e=0,de=0,ctrl_signal=0;
     Get_Distance_Right();
-    e = pos_pidstate.Target - __distance.right;
-    de = e - pos_pidstate.Error;
-    pos_pidstate.Error = e;
+    e = pos_pidparam.Target - __distance.right;
+    de = e - pos_pidparam.Error_r;
+    pos_pidparam.Error_r = e;
 
     //模糊规则
     if(e>2)
@@ -92,9 +89,9 @@ void Pos_ControlLeft(void)
 {
     float e=0,de=0,ctrl_signal=0;
     Get_Distance_Left();
-    e = pos_pidstate.Target - __distance.left;
-    de = e - pos_pidstate.Error;
-    pos_pidstate.Error = e;
+    e = pos_pidparam.Target - __distance.left;
+    de = e - pos_pidparam.Error_l;
+    pos_pidparam.Error_l = e;
 
     //模糊规则
     if(e>2)
@@ -155,100 +152,13 @@ void Pos_ControlLeft(void)
       MotorLeft(86+ctrl_signal);
       MotorRight(100);
     }
-
 }
 
-
-
-void pid_left(void)
+void FlushPIDparam(void)
 {
-  static int8_t adjust_flag=0,count=0,e=0;
-  int kp=5;
-  if(adjust_flag==0)                                //不在调节过程中
-  {
-    Get_Distance_Left();
-    e=__distance.left-14;
-    if(e>3)
-      e=4;
-    else if(e<-4)
-      e=-4;
-    if(e>2)
-        adjust_flag=1;
-    else if(e<-2)
-        adjust_flag=2;
-  }
-  else                                             //在调节过程中
-  {
-    switch(adjust_flag)
-    {
-      case 1:
-          if(count<e*kp){
-          MotorLeft(50);
-          MotorRight(100);
-          count++;
-          }
-          else if(count<2*e*kp){
-            MotorLeft(86);
-            MotorRight(49);
-            count++;
-          }
-          else{
-            MotorLeft(86);
-            MotorRight(100);
-            adjust_flag=0;
-            count=0;
-          }
-          break;
-      
-      case 2:                               //左偏
-          if(count<-e*kp){
-          MotorLeft(86);
-          MotorRight(49);
-          count++;
-          }
-          else if(count<-2*e*kp){
-            MotorLeft(50);
-            MotorRight(100);
-            count++;
-          }
-          else{
-            MotorLeft(86);
-            MotorRight(100);
-            adjust_flag=0;
-            count=0;
-          }
-          break;
-    }
-  }
+  pos_pidparam.Error_l=0;
+  pos_pidparam.Error_r=0;
 }
-
-void AngleAdjust_L(void)
-{
-  int8_t last_dis=__distance.left,e=0;
-  Get_Distance_Left();
-  if(last_dis==0 || last_dis==100)
-    return;
-  e=__distance.left-last_dis;
-
-  if(__distance.left>18 || __distance.left<12){
-    if(e>0){                 //向右偏
-      MotorLeft(0);
-      MotorRight(100);
-    }
-    else if(e<0){
-      MotorLeft(100);
-      MotorRight(0);
-    }
-  }
-  else{
-    MotorLeft(86);
-    MotorRight(100);
-  }
-  
-  MotorLeft(86);
-  MotorRight(100);
-}
-
 
 /**
   * @brief 通过编码器走直线

@@ -34,7 +34,7 @@ void Duty_20ms(void)
 void Duty_30ms(void)
 {
   u8 FirePosition[5]={1,1,1,1,1};
-  static u8 candle=2;         //灭一个火则减一，为0时返程 如果图有3个火焰直接改为3就好。
+  static u8 candle=5;         //灭一个火则减一，为0时返程 如果图有3个火焰直接改为3就好。
   static u8 FLAG=1,CLR=1;     //flag:选择step   clr：标志第一次进入step，完成step时退出
 
   if(FLAG==1){                //沿墙 step1  FLAG=0,1
@@ -202,23 +202,32 @@ else if(FLAG==10){
 
 else if(FLAG==11){
   along_flag=RIGHT;
-  Get_Distance_Right();
-  if(__distance.right>=40){				//dont be too small
+  //Get_Distance_Right();
+  //if(__distance.right>=40){                        //dont be too small
+  if(CLR){
+    __left_encoder_count=__right_encoder_count=0;
+    __left_encoder_count=__right_encoder_count=0;
+    CLR=0;
+  }
+  if(__right_encoder_count>=10||__left_encoder_count>=10){
     FLAG++;
     along_flag=0;
+		CLR=1;
+    
+		
   }
 }
 
 else if(FLAG==12){
   along_flag=0;
   if(CLR){
-    left_encoder_count=right_encoder_count=0;
-    left_encoder_count=right_encoder_count=0;
+    __left_encoder_count=__right_encoder_count=0;
+    __left_encoder_count=__right_encoder_count=0;
     CLR=0;
   }
-  MotorLeft(100);
-  MotorRight(100);
-  if(left_encoder_count>=22||right_encoder_count>=22){
+  MotorLeft(30);
+  MotorRight(30);
+  if(__left_encoder_count>=38||__right_encoder_count>=38){
     turn_right_withdelay();
     FLAG++;
     CLR=1;
@@ -228,12 +237,12 @@ else if(FLAG==12){
 else if(FLAG==13){
   along_flag=0;
   if(CLR){
-      left_encoder_count=right_encoder_count=0;
+      __left_encoder_count=__right_encoder_count=0;
       CLR=0;
   }
   MotorLeft(100);
   MotorRight(100);
-  if(left_encoder_count>=53||right_encoder_count>=53){
+  if(__left_encoder_count>=59||__right_encoder_count>=59){
     turn_right_withdelay();
     FLAG++;
     CLR=1;
@@ -337,12 +346,12 @@ else if(FLAG==19){
 else if(FLAG==20){
   along_flag=0;
   if(CLR){
-      left_encoder_count=right_encoder_count=0;
+      __left_encoder_count=__right_encoder_count=0;
       CLR=0;
   }
   MotorLeft(100);
   MotorRight(100);
-  if(left_encoder_count>=51||right_encoder_count>=51){
+  if(__left_encoder_count>=51||__right_encoder_count>=51){
     turn_right_withdelay();
     FLAG++;
     CLR=1;
@@ -385,8 +394,7 @@ else if(FLAG==22){
 
 else if(FLAG==100){                   //return journey from B fire
   along_flag=RIGHT;
-    if(CLR){
-    Get_Distance_Front();
+  if(CLR){
     CLR=0;
   }
   Get_Distance_Front();
@@ -410,10 +418,10 @@ else if(FLAG==101){
 else if(FLAG==102){
   along_flag=LEFT;
   if(CLR){
-    left_encoder_count=right_encoder_count=0;
+    __left_encoder_count=__right_encoder_count=0;
     CLR=0;
   }
-  if(left_encoder_count>=85||right_encoder_count>=85){
+  if(__left_encoder_count>=85||__right_encoder_count>=85){
     turn_right_withdelay();
     FLAG=21;
     CLR=1;

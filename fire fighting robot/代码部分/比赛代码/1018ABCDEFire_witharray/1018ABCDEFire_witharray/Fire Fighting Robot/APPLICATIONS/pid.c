@@ -1,32 +1,29 @@
 #include "main.h"
 
-//  float P,I,D,FF,MaxError
-static PIDParams pos_pidparam={0,0,0,0,80};
+//  int16_t Target,Error_r,Error_l,MaxError
+static PIDParams pos_pidparam={14,0,0,80};
 
-//  float Error,Target;
-static PIDState  pos_pidstate={0,14};
-
-//  int8_t ne_min,ne_two,ne_one,zero,one,two,max;????
+//  int8_t ne_min,ne_two,ne_one,zero,one,two,max;比例参数
 //static FuzzyParam fuzzyparam={-35,-20,-15,0,15,20,35};
-static FuzzyParam fuzzyparam={-33,-20,-13,0,13,20,33};
+static FuzzyParam fuzzyparam={-30,-20,-15,0,15,20,35};
 
-//  int8_t ne_min,ne_two,ne_one,zero,one,two,max;????
+//  int8_t ne_min,ne_two,ne_one,zero,one,two,max;微分参数
 //static FuzzyD fuzzyd={28,15,15,40,15,15,28};
-static FuzzyD fuzzyd={29,15,15,5,15,15,29};
+static FuzzyD fuzzyd={30,15,15,5,15,15,30};
 
 /*
-now_dis ???????    last_dis ???????
-now_diff ???????    last_diff ???????
+now_dis 本次测量的距离    last_dis 上次测量的距离
+now_diff 本次误差信号量    last_diff 上次误差信号量
 */
 void Pos_ControlRight(void)
 {
     float e=0,de=0,ctrl_signal=0;
     Get_Distance_Right();
-    e = pos_pidstate.Target - __distance.right;
-    de = e - pos_pidstate.Error;
-    pos_pidstate.Error = e;
+    e = pos_pidparam.Target - __distance.right;
+    de = e - pos_pidparam.Error_r;
+    pos_pidparam.Error_r = e;
 
-    //????
+    //模糊规则
     if(e>2)
     {
       ctrl_signal=fuzzyparam.max+fuzzyd.max*de;
@@ -65,22 +62,22 @@ void Pos_ControlRight(void)
       ctrl_signal=-pos_pidparam.MaxError;
     }
 
-    if(e>0)                  //??
+    if(e>0)                  //右偏
     {
       MotorLeft(100-ctrl_signal);
       MotorRight(100);
     }
-    else if(e<0)             //??
+    else if(e<0)             //左偏
     {
       MotorLeft(100);
       MotorRight(100+ctrl_signal);
     }
-    else if(de>0)       //????
+    else if(de>0)       //左边回来
     {
       MotorLeft(100-ctrl_signal);
       MotorRight(100);
     }
-    else                //????
+    else                //右边回来
     {
       MotorLeft(100);
       MotorRight(100+ctrl_signal);
@@ -92,11 +89,11 @@ void Pos_ControlLeft(void)
 {
     float e=0,de=0,ctrl_signal=0;
     Get_Distance_Left();
-    e = pos_pidstate.Target - __distance.left;
-    de = e - pos_pidstate.Error;
-    pos_pidstate.Error = e;
+    e = pos_pidparam.Target - __distance.left;
+    de = e - pos_pidparam.Error_l;
+    pos_pidparam.Error_l = e;
 
-    //????
+    //模糊规则
     if(e>2)
     {
       ctrl_signal=fuzzyparam.max+fuzzyd.max*de;
@@ -135,25 +132,49 @@ void Pos_ControlLeft(void)
       ctrl_signal=-pos_pidparam.MaxError;
     }
 
-    if(e>0)                  //??
+    if(e>0)                  //左偏
     {
       MotorLeft(100);
       MotorRight(100-ctrl_signal);
     }
-    else if(e<0)             //??
-    {
-      MotorLeft(100);
-      MotorRight(100);
-    }
-    else if(de>0)       //????
-    {
-      MotorLeft(100);
-      MotorRight(100-ctrl_signal);
-    }
-    else                //????
+    else if(e<0)             //右偏
     {
       MotorLeft(100+ctrl_signal);
       MotorRight(100);
     }
+    else if(de>0)       //右边回来
+    {
+      MotorLeft(100);
+      MotorRight(100-ctrl_signal);
+    }
+    else                //左边回来
+    {
+      MotorLeft(100+ctrl_signal);
+      MotorRight(100);
+    }
+}
 
+void FlushPIDparam(void)
+{
+  pos_pidparam.Error_l=0;
+  pos_pidparam.Error_r=0;
+}
+
+/**
+  * @brief 通过编码器走直线
+  *
+  */
+void GoStraight(void)
+{
+  int e;
+  float kp=16,u=0;
+  e=__left_encoder_count-__right_encoder_count;    //>0 左轮快；<0 右轮慢
+  if(e>2)
+    e=3;
+  else if(e<-2)
+    e=-3;
+
+  u=kp*e;
+  MotorLeft(86-u);
+  MotorRight(100+u-16);
 }

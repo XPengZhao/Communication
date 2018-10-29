@@ -4,12 +4,8 @@
 
 
 typedef struct{
-  float P,I,D,FF,MaxError;
+  int16_t Target,Error_r,Error_l,MaxError;
 }PIDParams;
-
-typedef struct{
-  float Error,Target;
-}PIDState;
 
 typedef struct{
   int8_t ne_min;
@@ -31,7 +27,9 @@ typedef struct{
   int8_t max;
 }FuzzyD;
 
-void Speed_Control(void);
+
 void Pos_ControlRight(void);
 void Pos_ControlLeft(void);
+void FlushPIDparam(void);
+void GoStraight(void);
 #endif
