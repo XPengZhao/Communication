@@ -6,7 +6,7 @@ void SysTick_Init()
 {
   u32 reload=0;
   fac_us=SystemCoreClock/8000000;                          //每个us需要的systick时钟数
-  reload=SystemCoreClock/8000*10;                           //reload值为10ms需要的systick时钟数
+  reload=SystemCoreClock/8000*10;                          //reload值为10ms需要的systick时钟数
   SysTick->LOAD  = (reload & SysTick_LOAD_RELOAD_Msk) - 1; //每10ms中断一次
   NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
   SysTick->VAL   = 0;

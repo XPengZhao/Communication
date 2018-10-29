@@ -4,7 +4,6 @@ vu32 __right_encoder_count;
 
 void EXTIX_Init(void)
 {
- 
   EXTI_InitTypeDef EXTI_InitStructure;
   NVIC_InitTypeDef NVIC_InitStructure;
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -26,7 +25,7 @@ void EXTIX_Init(void)
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
 
-  
+
   //GPIOC.4 中断线以及中断初始化配置  下降沿触发  right
   GPIO_EXTILineConfig(GPIO_PortSourceGPIOC,GPIO_PinSource4);
   EXTI_InitStructure.EXTI_Line=EXTI_Line4;
@@ -40,11 +39,10 @@ void EXTIX_Init(void)
 
 
   NVIC_InitStructure.NVIC_IRQChannel = EXTI4_IRQn;              //right
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;  //抢占优先级2 
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;  //抢占优先级2
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x03;         //子优先
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
-
 }
 
 //left
@@ -53,7 +51,7 @@ void EXTI3_IRQHandler(void)
   if(EXTI_GetITStatus(EXTI_Line3)!=RESET){
     __left_encoder_count++;
     __Sensordata.wheel_left=__left_encoder_count;
-    EXTI_ClearITPendingBit(EXTI_Line3); //清除LINE3上的中断标志位  
+    EXTI_ClearITPendingBit(EXTI_Line3); //清除LINE3上的中断标志位
   }
 }
  

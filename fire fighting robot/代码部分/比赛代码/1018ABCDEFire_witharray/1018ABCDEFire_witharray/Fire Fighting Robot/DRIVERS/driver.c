@@ -11,7 +11,6 @@ void Driver_Init(void)
   EXTIX_Init();
   PWM_Init();
   Wave_Init();
-	FanMotor_Init();
+  FanMotor_Init();
   SysTick_Init();
-	
 }

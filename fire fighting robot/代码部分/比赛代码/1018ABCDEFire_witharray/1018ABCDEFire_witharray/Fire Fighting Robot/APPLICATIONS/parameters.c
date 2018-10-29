@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
-  * @brief 等待小车右超声波值稳定在100~300mm
+  * @brief 延时启动
   */
 void SenserOffsetInit(void)
 {

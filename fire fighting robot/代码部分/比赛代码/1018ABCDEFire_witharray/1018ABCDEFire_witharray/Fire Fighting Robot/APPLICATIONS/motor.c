@@ -84,7 +84,7 @@ void turn_left(void)
   __right_encoder_count=0;
   MotorRight(50);
   MotorLeft(-50);
-  while(__right_encoder_count<12);				//0.7327cm/脉是encoder的分辨率 25*0.7327=18.32cm
+  while(__right_encoder_count<12);          //0.7327cm/脉是encoder的分辨率 25*0.7327=18.32cm
   MotorLeft(0);
   MotorRight(0);
 }
@@ -129,7 +129,7 @@ void turn_right45()
   MotorLeft(15);
   delay_ms(900);
   
-	MotorLeft(0);
+  MotorLeft(0);
 }
 
 void turn_right45_return()

@@ -8,4 +8,3 @@ extern vu32 __right_encoder_count;
 void EXTIX_Init(void);
 
 #endif
-

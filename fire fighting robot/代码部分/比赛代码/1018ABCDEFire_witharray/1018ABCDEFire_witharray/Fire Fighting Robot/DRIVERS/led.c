@@ -16,10 +16,6 @@ void LED_Init(void)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;      //IO口速度为10MHz
   GPIO_Init(GPIOD, &GPIO_InitStructure);                 //根据设定参数初始化GPIOD
   GPIO_ResetBits(GPIOD,GPIO_Pin_7);                        //PD.2 输出高,LED亮
-
-#if DRIVER_CHECK
-printf("led init successful\r\n");
-#endif
 }
 
 /**

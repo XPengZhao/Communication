@@ -42,7 +42,7 @@ void Duty_30ms(void)
     Get_Distance_Front();
     if(__distance.front<=42){
       along_flag=0;
-      FLAG++;                 //along_flag FLAG CLR 
+      FLAG++;                 //along_flag FLAG CLR
     }
   }
 
@@ -56,7 +56,7 @@ void Duty_30ms(void)
       FLAG++;
     }
   }
-  
+
   else if(FLAG==3){
     along_flag=RIGHT;
     Get_Distance_Front();
@@ -67,124 +67,123 @@ void Duty_30ms(void)
     }
   }
 
-else if(FLAG==4){
-  along_flag=0;
-  MotorLeft(100);
-  MotorRight(100);
-  Get_Distance_Front();
-  if(__distance.front<=18){
-
-    if(FirePosition[0]){
-      MotorLeft(0);
-      MotorRight(0);
-      FanMotor_Open();
-      turn_left45();
-      delay_ms(1000);
-      turn_left45_return();
-      FanMotor_Close();
-      candle--;
-    }
-
-    turn_right_withdelay();
-    FLAG++;
-  }
-}
-
-else if(FLAG==5){
-  along_flag=LEFT;
-  if(CLR){
+  //第一个火焰
+  else if(FLAG==4){
+    along_flag=0;
+    MotorLeft(100);
+    MotorRight(100);
     Get_Distance_Front();
-    CLR=0;
-  }
-  Get_Distance_Front();
-  if(__distance.front<=18){
+    if(__distance.front<=18){
 
-    if(FirePosition[1]){
-      MotorLeft(0);
-      MotorRight(0);
-      FanMotor_Open();
-      turn_left45();
-      delay_ms(1000);
-      turn_left45_return();
-      FanMotor_Close();
-      candle--;
-    }
+      if(FirePosition[0]){
+        MotorLeft(0);
+        MotorRight(0);
+        FanMotor_Open();
+        turn_left45();
+        delay_ms(1000);
+        turn_left45_return();
+        FanMotor_Close();
+        candle--;
+      }
 
-    turn_right_withdelay();
-    if(candle)
-      FLAG++;
-    else{
-      FLAG=100;
       turn_right_withdelay();
-    }
-    CLR=1;
-  }
-}
-
-else if(FLAG==6){
-  along_flag=LEFT;
-  if(CLR){
-    Get_Distance_Front();
-    CLR=0;
-  }
-  Get_Distance_Front();
-  if(__distance.front<=18){
-    turn_right_withdelay();
-    CLR=1;
-    FLAG++;
-  }
-}
-
-else if(FLAG==7){
-  along_flag=LEFT;
-  Get_Distance_Front();
-  if(__distance.front<=18){
-    if(FirePosition[2]){
-    MotorLeft(0);
-    MotorRight(0);
-    FanMotor_Open();
-    turn_left45();
-    delay_ms(1000);
-    turn_left45_return();
-    FanMotor_Close();
-    candle--;
-    }
-    turn_right_withdelay();
-    if(candle)
       FLAG++;
-    else
-      FLAG=120;
-    along_flag=0;
-    
+    }
   }
-}
 
-else if(FLAG==8){
-  along_flag=LEFT;
-  if(CLR){
+  //第二个火焰
+  else if(FLAG==5){
+    along_flag=LEFT;
+    if(CLR){
+      CLR=0;
+    }
     Get_Distance_Front();
-    CLR=0;
-    }
-  Get_Distance_Front();
-  if(__distance.front<=42){
-    
-    FLAG++;
-    CLR=1;
-    along_flag=0;
-  }
-}
 
-else if(FLAG==9){
-  along_flag=0;
-  MotorLeft(100);
-  MotorRight(100);
-  Get_Distance_Front();
-  if(__distance.front<=18){
-    turn_left_withdelay();
-    FLAG++;
-    along_flag=0;
+    if(__distance.front<=18){
+      if(FirePosition[1]){
+        MotorLeft(0);
+        MotorRight(0);
+        FanMotor_Open();
+        turn_left45();
+        delay_ms(1000);
+        turn_left45_return();
+        FanMotor_Close();
+        candle--;
+      }
+
+      turn_right_withdelay();
+
+      if(candle)
+        FLAG++;
+      else{
+        FLAG=100;
+        turn_right_withdelay();
+      }
+      CLR=1;
     }
   }
+
+  else if(FLAG==6){
+    along_flag=LEFT;
+    if(CLR){
+      CLR=0;
+    }
+    Get_Distance_Front();
+    if(__distance.front<=18){
+      turn_right_withdelay();
+      CLR=1;
+      FLAG++;
+    }
+  }
+
+  //第三个火焰
+  else if(FLAG==7){
+    along_flag=LEFT;
+    Get_Distance_Front();
+    if(__distance.front<=18){
+      if(FirePosition[2]){
+        MotorLeft(0);
+        MotorRight(0);
+        FanMotor_Open();
+        turn_left45();
+        delay_ms(1000);
+        turn_left45_return();
+        FanMotor_Close();
+        candle--;
+      }
+      turn_right_withdelay();
+      if(candle)
+        FLAG++;
+      else
+        FLAG=120;
+      along_flag=0;
+    }
+  }
+
+  else if(FLAG==8){
+    along_flag=LEFT;
+    if(CLR){
+      CLR=0;
+    }
+    Get_Distance_Front();
+    if(__distance.front<=42){
+      FLAG++;
+      CLR=1;
+      along_flag=0;
+    }
+  }
+
+  else if(FLAG==9){
+    along_flag=0;
+    MotorLeft(100);
+    MotorRight(100);
+    Get_Distance_Front();
+    if(__distance.front<=18){
+      turn_left_withdelay();
+      FLAG++;
+      along_flag=0;
+      }
+    }
 
 
 else if(FLAG==10){
@@ -193,7 +192,6 @@ else if(FLAG==10){
   Get_Distance_Front();
   if(__distance.front<=18){
     turn_left_withdelay();
-  
     FLAG++;
     CLR=1;
     along_flag=0;
@@ -218,21 +216,21 @@ else if(FLAG==11){
   }
 }
 
-else if(FLAG==12){
-  along_flag=0;
-  if(CLR){
-    __left_encoder_count=__right_encoder_count=0;
-    __left_encoder_count=__right_encoder_count=0;
-    CLR=0;
+  //进入房间
+  else if(FLAG==12){
+    along_flag=0;
+    if(CLR){
+      __left_encoder_count=__right_encoder_count=0;
+      CLR=0;
+    }
+    MotorLeft(30);
+    MotorRight(30);
+    if(__left_encoder_count>=38||__right_encoder_count>=38){
+      turn_right_withdelay();
+      FLAG++;
+      CLR=1;
+    }
   }
-  MotorLeft(30);
-  MotorRight(30);
-  if(__left_encoder_count>=38||__right_encoder_count>=38){
-    turn_right_withdelay();
-    FLAG++;
-    CLR=1;
-  }
-}
 
 else if(FLAG==13){
   along_flag=0;
@@ -249,88 +247,82 @@ else if(FLAG==13){
   }
 }
 
-else if(FLAG==14){
-  along_flag=0;
-  MotorRight(100);
-  MotorLeft(100);
-  Get_Distance_Right();
-  if(__distance.right<=25){
-    FLAG++;
-  }
-}
-
-else if(FLAG==15){
-  along_flag=RIGHT;
-  Get_Distance_Front();
-  if(__distance.front<=18){
-    turn_left_withdelay();
-    FLAG++;
+  else if(FLAG==14){
     along_flag=0;
-  }
-}
-
-else if(FLAG==16){
-  along_flag=RIGHT;
-  Get_Distance_Front();
-  if(__distance.front<=18){
-    if(FirePosition[3]){
-    MotorLeft(0);
-    MotorRight(0);
-    FanMotor_Open();
-    turn_right45();
-    delay_ms(1000);
-    turn_right45_return();
-    FanMotor_Close();
+    MotorRight(100);
+    MotorLeft(100);
+    Get_Distance_Right();
+    if(__distance.right<=25){
+      FLAG++;
     }
-    turn_left_withdelay();
-    FLAG++;
-    along_flag=0;
   }
-}
 
-else if(FLAG==17){
-  along_flag=RIGHT;
-  if(CLR){
-      Get_Distance_Front();
-      Get_Distance_Front();
-      Get_Distance_Front();
-      Get_Distance_Front();
+  else if(FLAG==15){
+    along_flag=RIGHT;
+    Get_Distance_Front();
+    if(__distance.front<=18){
+      turn_left_withdelay();
+      FLAG++;
+      along_flag=0;
+    }
+  }
+
+  //第四个火焰
+  else if(FLAG==16){
+    along_flag=RIGHT;
+    Get_Distance_Front();
+    if(__distance.front<=18){
+      if(FirePosition[3]){
+        MotorLeft(0);
+        MotorRight(0);
+        FanMotor_Open();
+        turn_right45();
+        delay_ms(1000);
+        turn_right45_return();
+        FanMotor_Close();
+      }
+      turn_left_withdelay();
+      FLAG++;
+      along_flag=0;
+    }
+  }
+
+  //第五个火焰
+  else if(FLAG==17){
+    along_flag=RIGHT;
+    if(CLR){
+        CLR=0;
+      }
+    Get_Distance_Front();
+    if(__distance.front<=18){
+      if(FirePosition[4]){
+        MotorLeft(0);
+        MotorRight(0);
+        FanMotor_Open();
+        turn_right45();
+        delay_ms(1000);
+        turn_right45_return();
+        FanMotor_Close();
+      }
+      turn_left_withdelay();
+      FLAG++;
+      CLR=1;
+      along_flag=0;
+    }
+  }
+
+  else if(FLAG==18){
+    along_flag=RIGHT;
+    if(CLR){
       CLR=0;
     }
-  Get_Distance_Front();
-  if(__distance.front<=18){
-    if(FirePosition[4]){
-    MotorLeft(0);
-    MotorRight(0);
-    FanMotor_Open();
-    turn_right45();
-    delay_ms(1000);
-    turn_right45_return();
-    FanMotor_Close();
+    Get_Distance_Front();
+    if(__distance.front<=42){
+      FLAG++;
+      CLR=1;
+      along_flag=0;
     }
-    turn_left_withdelay();
-    FLAG++;
-    CLR=1;
-    along_flag=0;
   }
-}
-
-else if(FLAG==18){
-  along_flag=RIGHT;
-  if(CLR){
-      Get_Distance_Front();
-      Get_Distance_Front();
-      Get_Distance_Front();
-      Get_Distance_Front();
-      CLR=0;
-    }
-  Get_Distance_Front();
-  if(__distance.front<=42){
-    FLAG++;
-    CLR=1;
-    along_flag=0;
-  }
-}
 
 else if(FLAG==19){
   along_flag=0;
@@ -343,27 +335,29 @@ else if(FLAG==19){
   }
 }
 
-else if(FLAG==20){
-  along_flag=0;
-  if(CLR){
-      __left_encoder_count=__right_encoder_count=0;
-      CLR=0;
+  //回起点
+  else if(FLAG==20){
+    along_flag=0;
+    if(CLR){
+        __left_encoder_count=__right_encoder_count=0;
+        CLR=0;
+    }
+    MotorLeft(100);
+    MotorRight(100);
+    if(__left_encoder_count>=51||__right_encoder_count>=51){
+      turn_right_withdelay();
+      FLAG++;
+      CLR=1;
+    }
   }
-  MotorLeft(100);
-  MotorRight(100);
-  if(__left_encoder_count>=51||__right_encoder_count>=51){
-    turn_right_withdelay();
-    FLAG++;
-    CLR=1;
-  }
-}
 
 else if(FLAG==21){
   along_flag=0;
   
   MotorLeft(30);
   MotorRight(30);
-  
+
+  FilterFlush();
   Get_Distance_Right();
   if(__distance.right<=30){
     FLAG++;
@@ -374,8 +368,7 @@ else if(FLAG==21){
 else if(FLAG==22){
   along_flag=RIGHT;
   if(CLR){
-    Get_Distance_Right();
-    Get_Distance_Right();
+    FilterFlush();
     CLR=0;
   }
   Get_Distance_Front();

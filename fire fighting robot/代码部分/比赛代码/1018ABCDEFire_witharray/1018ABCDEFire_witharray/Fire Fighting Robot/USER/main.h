@@ -1,13 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define DRIVER_CHECK 0
-#define TASKONCE_CHECK 0                                //如果只想检查一次，置为0
-#define TASKDUPLICATE_CHECK 0
-#define IRQONCE_CHECK 0                                 //如果只想检查一次，置为0
-#define IRQDUPLICATE_CHECK 0
-
-
 #include "stdio.h"
 #include "stm32f10x.h"
 #include "delay.h"

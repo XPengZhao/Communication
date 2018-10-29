@@ -49,13 +49,9 @@ void PWM_Init(void)
     TIM_OC2Init(TIM4, &TIM_OCInitStructure);                    //根据TIM_OCInitStruct中指定的参数初始化外设TIMx
     TIM_OC2PreloadConfig(TIM4, TIM_OCPreload_Enable);           //CH2预装载使能  
 
-    TIM_ARRPreloadConfig(TIM4, ENABLE);                         //使能TIMx在ARR上的预装载寄存器  
+    TIM_ARRPreloadConfig(TIM4, ENABLE);                         //使能TIMx在ARR上的预装载寄存器
     TIM_CtrlPWMOutputs(TIM4,ENABLE);                            //MOE 主输出使能
     TIM_Cmd(TIM4, ENABLE);
-
-#if DRIVER_CHECK
-printf("pwm init successful!\r\n");
-#endif
 }
 
 /**
@@ -66,7 +62,6 @@ printf("pwm init successful!\r\n");
   *          左超声波  trig-->PC.13 echo-->PA.2 TIM5_CH3
   *          右超声波  trig-->PC.12 echo-->PB.0 TIM3_CH3
   */
-
 void Wave_Init(void){
   
     GPIO_InitTypeDef GPIO_InitStructure;
