@@ -16,12 +16,15 @@ void taskloop(void)
 
 void Duty_25ms(void)
 {
-  //MotorLeft(100);
-  //MotorRight(100);
-  delay_ms(1000);
-  turn_right_withdelay();
-  delay_ms(1000);
-  //turn_right_withdelay();
+
+
+	delay_ms(1000);
+	FanMotor_Open();
+	turn_right45();
+	delay_ms(1000);
+	turn_right45_return();
+	FanMotor_Close();
+	delay_ms(1000);
 }
 
 void Duty_50ms(void)

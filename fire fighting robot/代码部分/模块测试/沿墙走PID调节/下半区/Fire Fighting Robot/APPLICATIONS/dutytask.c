@@ -16,7 +16,7 @@ void taskloop(void)
 
 void Duty_20ms(void)
 {
-
+  Pos_ControlLeft();
 }
 
 void Duty_40ms(void)

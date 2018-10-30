@@ -16,8 +16,8 @@ void taskloop(void)
 
 void Duty_25ms(void)
 {
-  MotorLeft(100);
-  MotorRight(100);
+  MotorLeft(65);
+  MotorRight(60);
   DatatransferTask();
 }
 

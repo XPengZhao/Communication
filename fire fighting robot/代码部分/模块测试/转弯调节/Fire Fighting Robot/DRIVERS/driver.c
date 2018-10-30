@@ -8,6 +8,7 @@ void Driver_Init(void)
   Adc_Init();
   EXTIX_Init();
   PWM_Init();
+  FanMotor_Init();
   Wave_Init();
   SysTick_Init();
 }

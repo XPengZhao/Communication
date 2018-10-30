@@ -10,4 +10,5 @@ void Driver_Init(void)
   PWM_Init();
   Wave_Init();
   SysTick_Init();
+  delay_ms(2000);
 }

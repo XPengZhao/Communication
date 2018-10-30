@@ -7,7 +7,7 @@ void turn_left_withdelay()
 {
   MotorLeft(-50);
   MotorRight(50);
-  delay_ms(390) ;
+  delay_ms(380) ;
   MotorLeft(0)  ;
   MotorRight(0) ;
 }
@@ -16,7 +16,7 @@ void turn_right_withdelay()
 {
   MotorLeft(50)  ;
   MotorRight(-50);
-  delay_ms(405)  ;
+  delay_ms(395)  ;
   MotorLeft(0)   ;
 	MotorRight(0) ;
 }
@@ -50,7 +50,7 @@ void turn_left45()
 {
   MotorRight(20);
   MotorLeft(0);
-  delay_ms(900);
+  delay_ms(960);
   MotorRight(0);
 }
 
@@ -58,7 +58,7 @@ void turn_left45_return()
 {
   MotorLeft(0);
   MotorRight(-20);
-  delay_ms(960);
+  delay_ms(800);
   MotorRight(0);
 }
 
@@ -67,7 +67,7 @@ void turn_right45()
 {
   MotorRight(0);
   MotorLeft(20);
-  delay_ms(900);
+  delay_ms(960);
   MotorLeft(0);
 }
 
@@ -75,6 +75,6 @@ void turn_right45_return()
 {
   MotorLeft(-20);
   MotorRight(0);
-  delay_ms(930);
+  delay_ms(800);
   MotorLeft(0);
 }

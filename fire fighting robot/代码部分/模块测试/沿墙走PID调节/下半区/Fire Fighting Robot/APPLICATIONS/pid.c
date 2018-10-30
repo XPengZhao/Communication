@@ -5,11 +5,11 @@ static PIDParams pos_pidparam={14,0,0,80};
 
 //  int8_t ne_min,ne_two,ne_one,zero,one,two,max;比例参数
 //static FuzzyParam fuzzyparam={-35,-20,-15,0,15,20,35};
-static FuzzyParam fuzzyparam={-35,-20,-15,0,15,20,35};
+static FuzzyParam fuzzyparam={-35,-20,-15,0,15,15,35};
 
 //  int8_t ne_min,ne_two,ne_one,zero,one,two,max;微分参数
-//static FuzzyD fuzzyd={28,15,15,40,15,15,28};
-static FuzzyD fuzzyd={28,15,15,5,15,15,28};
+//static FuzzyD fuzzyd={30,15,15,40,15,15,30};
+static FuzzyD fuzzyd={30,20,15,30,15,20,30};
 
 /*
 now_dis 本次测量的距离    last_dis 上次测量的距离
@@ -22,6 +22,12 @@ void Pos_ControlRight(void)
     e = pos_pidparam.Target - __distance.right;
     de = e - pos_pidparam.Error_r;
     pos_pidparam.Error_r = e;
+
+    if(de>8 || de<-8){
+      FlushPIDparam();
+      FilterFlush();
+      return;
+    }
 
     //模糊规则
     if(e>2)
@@ -64,23 +70,23 @@ void Pos_ControlRight(void)
 
     if(e>0)                  //右偏
     {
-      MotorLeft(86-ctrl_signal);
+      MotorLeft(100-ctrl_signal);
       MotorRight(100);
     }
     else if(e<0)             //左偏
     {
-      MotorLeft(86);
-      MotorRight(100+ctrl_signal+de*16);
+      MotorLeft(100);
+      MotorRight(100+ctrl_signal);
     }
     else if(de>0)       //左边回来
     {
-      MotorLeft(86-ctrl_signal);
+      MotorLeft(100-ctrl_signal);
       MotorRight(100);
     }
     else                //右边回来
     {
-      MotorLeft(86);
-      MotorRight(100+ctrl_signal+de*16);
+      MotorLeft(100);
+      MotorRight(100+ctrl_signal);
     }
 
 }
@@ -92,6 +98,12 @@ void Pos_ControlLeft(void)
     e = pos_pidparam.Target - __distance.left;
     de = e - pos_pidparam.Error_l;
     pos_pidparam.Error_l = e;
+
+    if(de>8  || de<-8){
+      FlushPIDparam();
+      FilterFlush();
+      return;
+    }
 
     //模糊规则
     if(e>2)
@@ -134,22 +146,22 @@ void Pos_ControlLeft(void)
 
     if(e>0)                  //左偏
     {
-      MotorLeft(86);
-      MotorRight(100-ctrl_signal-de*16);
+      MotorLeft(100);
+      MotorRight(100-ctrl_signal);
     }
     else if(e<0)             //右偏
     {
-      MotorLeft(86+ctrl_signal);
+      MotorLeft(100+ctrl_signal);
       MotorRight(100);
     }
     else if(de>0)       //右边回来
     {
-      MotorLeft(86);
-      MotorRight(100-ctrl_signal-de*16);
+      MotorLeft(100);
+      MotorRight(100-ctrl_signal);
     }
     else                //左边回来
     {
-      MotorLeft(86+ctrl_signal);
+      MotorLeft(100+ctrl_signal);
       MotorRight(100);
     }
 }
