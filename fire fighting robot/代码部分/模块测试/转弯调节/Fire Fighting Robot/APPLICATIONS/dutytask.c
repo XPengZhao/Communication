@@ -20,9 +20,9 @@ void Duty_25ms(void)
 
 	delay_ms(1000);
 	FanMotor_Open();
-	turn_right45();
-	delay_ms(1000);
-	turn_right45_return();
+	turn_left45();
+	delay_ms(2000);
+	turn_left45_return();
 	FanMotor_Close();
 	delay_ms(1000);
 }

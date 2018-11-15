@@ -50,7 +50,7 @@ void turn_left45()
 {
   MotorRight(20);
   MotorLeft(0);
-  delay_ms(960);
+  delay_ms(1060);
   MotorRight(0);
 }
 
@@ -58,7 +58,7 @@ void turn_left45_return()
 {
   MotorLeft(0);
   MotorRight(-20);
-  delay_ms(800);
+  delay_ms(890);
   MotorRight(0);
 }
 
